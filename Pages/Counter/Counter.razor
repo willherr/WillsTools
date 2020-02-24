@@ -1,0 +1,86 @@
+﻿@page "/counter"
+@*@inject ProtectedSessionStorage ProtectedSessionStore*@
+@inject IJSRuntime JSRuntime
+
+@if (!initializing)
+{
+    <div class="row no-gutters justify-content-center">
+        @if (counterWidgets.Count == 0)
+        {
+            <span class="text-info text-center">Click the options button to add some counters!</span>
+        }
+        @foreach (var counterWidget in counterWidgets)
+        {
+            <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
+        }
+    </div>
+}
+
+@code {
+    private bool initializing = true;
+
+    private void AddCounter()
+    {
+        counterWidgets.Add(new CounterWidgetModel(counterWidgets.Count + 1)
+        {
+            OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter)
+        });
+        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+    }
+
+    private void RemoveCounter(int id)
+    {
+        counterWidgets.RemoveAt(id - 1);
+        for (int i = 1; i <= counterWidgets.Count; i++)
+        {
+            counterWidgets[i - 1].Id = i;
+        }
+        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+    }
+
+    private void ChangeCounter(CounterWidgetModel counter)
+    {
+        counterWidgets[counter.Id - 1] = counter;
+        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+    }
+
+    #region Initialization
+    private List<CounterWidgetModel> counterWidgets = new List<CounterWidgetModel>();
+    [CascadingParameter] MainLayout Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Layout.Title = "Counter";
+        Layout.PageActions = new List<(string Name, Action Action)>
+    {
+            ("Add Counter", AddCounter)
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            //counterWidgets = await ProtectedSessionStore.GetAsync<List<CounterWidgetModel>>("counters");
+
+            if ((counterWidgets?.Count ?? 0) == 0)
+            {
+                counterWidgets = new List<CounterWidgetModel>
+            {
+                    new CounterWidgetModel()
+                };
+            }
+
+            foreach (var counterWidget in counterWidgets)
+            {
+                counterWidget.OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter);
+            }
+
+            initializing = false;
+            StateHasChanged();
+        }
+    }
+    #endregion
+}

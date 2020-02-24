@@ -1,0 +1,15 @@
+﻿@page "/"
+
+<div class="text-center">
+    Be adventurous. Click some buttons.
+</div>
+
+@code {
+    [CascadingParameter] MainLayout Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Layout.Reset();
+    }
+}

@@ -1,0 +1,64 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<NavMenu />
+
+<div class="main bg-light">
+    <div class="card rounded-0">
+
+        <div class="card-header bg-white @(!string.IsNullOrEmpty(Title) || PageActions.Any() ? "" : "d-none")">
+
+            <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">@Title</h6>
+
+            <div class="btn-group float-right @(pageActions.Any() ? "" : "d-none")">
+                <button id="PageActions" type="button" class="btn btn-secondary rounded py-0 px-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data->
+                    <span class="fas fa-cog"></span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    @foreach (var pageAction in pageActions)
+                    {
+                        <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body px-0 px-sm-2">
+            <CascadingValue Value="this">
+                @Body
+            </CascadingValue>
+        </div>
+    </div>
+</div>
+
+@code{
+    private string title;
+    public string Title
+    {
+        get => title;
+        set
+        {
+            title = value;
+            StateHasChanged();
+        }
+    }
+
+    private List<(string Name, Action Action)> pageActions = new List<(string Name, Action Action)>();
+    public List<(string Name, Action Action)> PageActions
+    {
+        get => pageActions;
+        set
+        {
+            pageActions = value;
+            StateHasChanged();
+        }
+    }
+
+    public void Reset()
+    {
+        title = null;
+        pageActions = new List<(string Name, Action Action)>();
+        StateHasChanged();
+    }
+}

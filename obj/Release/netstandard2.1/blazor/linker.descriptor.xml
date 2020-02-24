@@ -1,0 +1,5 @@
+﻿<linker>
+  <assembly fullname="WillsToolsWasm">
+    <type fullname="*" required="true" />
+  </assembly>
+</linker>
