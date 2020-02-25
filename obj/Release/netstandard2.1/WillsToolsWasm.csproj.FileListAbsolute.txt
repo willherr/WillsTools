@@ -54,7 +54,6 @@ C:\Users\bcwil\source\repos\WillsTools\bin\Release\netstandard2.1\System.Runtime
 C:\Users\bcwil\source\repos\WillsTools\bin\Release\netstandard2.1\System.Text.Encodings.Web.dll
 C:\Users\bcwil\source\repos\WillsTools\bin\Release\netstandard2.1\System.Text.Json.dll
 C:\Users\bcwil\source\repos\WillsTools\bin\Release\netstandard2.1\System.Threading.Tasks.Extensions.dll
-C:\Users\bcwil\source\repos\WillsTools\obj\Release\netstandard2.1\WillsToolsWasm.csprojAssemblyReference.cache
 C:\Users\bcwil\source\repos\WillsTools\obj\Release\netstandard2.1\staticwebassets\WillsToolsWasm.StaticWebAssets.Manifest.cache
 C:\Users\bcwil\source\repos\WillsTools\obj\Release\netstandard2.1\staticwebassets\WillsToolsWasm.StaticWebAssets.xml
 C:\Users\bcwil\source\repos\WillsTools\obj\Release\netstandard2.1\WillsToolsWasm.RazorComponent.input.cache
