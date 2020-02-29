@@ -136,7 +136,6 @@ app {
         top: 0.5rem;
     }
 
-/*@media (max-width: 767.98px) {*/
 .main .top-row:not(.auth) {
     display: none;
 }
@@ -148,7 +147,6 @@ app {
 .main .top-row a, .main .top-row .btn-link {
     margin-left: 0;
 }
-/*}*/
 
 @media (min-width: 576px) {
     .w-sm-auto {
@@ -158,27 +156,10 @@ app {
 }
 
 @media (min-width: 768px) {
-    /*app {
-        flex-direction: row;
-    }*/
-
-    /*.page-navbar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-    }*/
-
-    /*.main .top-row {
-        position: sticky;
-        top: 0;
-    }*/
-
     .navbar-toggler {
         display: none;
     }
 
-    /* Never collapse the page-navbar for wide screens */
     .page-navbar .collapse {
         display: block;
     }
