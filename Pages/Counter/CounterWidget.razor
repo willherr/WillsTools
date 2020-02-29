@@ -1,22 +1,19 @@
 ﻿<div class="card d-inline-block m-sm-4 mb-4 mx-3 w-100 w-sm-auto">
     <div class="card-header text-left">
-        <input type="text" class="pl-1 h6 card-title d-inline-block mb-0 bg-transparent border-0 w-75" placeholder="@(Model.IsPlaceHolder ? Model.Name : null)" value="@(Model.IsPlaceHolder ? null : Model.Name)" @onchange="ChangeName" />
+        <input class="pl-1 h6 card-title d-inline-block mb-0 bg-transparent border-0 w-75" type="text" placeholder="@(Model.IsPlaceHolder ? Model.Name : null)" value="@(Model.IsPlaceHolder ? null : Model.Name)" @onchange="@(e => Model.Name = e.Value?.ToString())" />
         <button class="float-right close p-0" @onclick="@(() => OnRemoveWidget.InvokeAsync(Model.Id))"><span>x</span></button>
     </div>
     <div class="card-body text-center">
-        <h1>@Model.CurrentCount</h1>
+        <input class="h1 bg-transparent border-0 text-center" type="text" size="8" maxlength="8" value="@(Model.IsPlaceHolder ? null : Model.CurrentCount.ToString())" onkeypress="if ((event.keyCode ? event.keyCode : event.which) === 13) { $(this).blur(); return; } let c = String.fromCharCode(event.keyCode); return c === '-' || Number.isInteger(Number(c));" placeholder="@(Model.IsPlaceHolder ? "0" : null)" @onchange="@(e => Model.CurrentCount = int.TryParse(e.Value?.ToString() ?? "", out var result) ? result : Model.CurrentCount)" />
 
-        <button class="btn btn-primary mr-1" @onclick="@(() => --Model.CurrentCount)"><i class="fas fa-minus"></i></button>
-        <button class="btn btn-primary ml-1" @onclick="@(() => ++Model.CurrentCount)"><i class="fas fa-plus"></i></button>
+        <div class="row no-gutters mb-2">
+            <span class="col-6"><button class="btn btn-primary w-75" @onclick="@(() => --Model.CurrentCount)"><i class="fas fa-minus"></i></button></span>
+            <span class="col-6"><button class="btn btn-primary w-75" @onclick="@(() => ++Model.CurrentCount)"><i class="fas fa-plus"></i></button></span>
+        </div>
     </div>
 </div>
 
 @code {
-    private void ChangeName(ChangeEventArgs e)
-    {
-        Model.Name = e.Value?.ToString();
-    }
-
     #region Initialization
     [Parameter] public EventCallback<int> OnRemoveWidget { get; set; }
     [Parameter] public CounterWidgetModel Model { get; set; }

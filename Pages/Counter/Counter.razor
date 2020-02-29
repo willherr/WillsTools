@@ -18,15 +18,7 @@
 
 @code {
     private bool initializing = true;
-
-    private void AddCounter()
-    {
-        counterWidgets.Add(new CounterWidgetModel(counterWidgets.Count + 1)
-        {
-            OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter)
-        });
-        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
-    }
+    private bool ignoreChanges = false;
 
     private void RemoveCounter(int id)
     {
@@ -40,8 +32,42 @@
 
     private void ChangeCounter(CounterWidgetModel counter)
     {
-        counterWidgets[counter.Id - 1] = counter;
+        if (!ignoreChanges)
+        {
+            counterWidgets[counter.Id - 1] = counter;
+            //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+        }
+    }
+
+    private void AddCounter()
+    {
+        counterWidgets.Add(new CounterWidgetModel(counterWidgets.Count + 1)
+        {
+            OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter)
+        });
         //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+    }
+
+    private void ResetCounters()
+    {
+        ignoreChanges = true;
+        counterWidgets.ForEach(counter => counter.CurrentCount = 0);
+        ignoreChanges = false;
+        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+    }
+
+    private void IncrementCounters()
+    {
+        ignoreChanges = true;
+        counterWidgets.ForEach(counter => counter.CurrentCount++);
+        ignoreChanges = false;
+    }
+
+    private void DecrementCounters()
+    {
+        ignoreChanges = true;
+        counterWidgets.ForEach(counter => counter.CurrentCount--);
+        ignoreChanges = false;
     }
 
     #region Initialization
@@ -53,8 +79,11 @@
         base.OnInitialized();
         Layout.Title = "Counter";
         Layout.PageActions = new List<(string Name, Action Action)>
-    {
-            ("Add Counter", AddCounter)
+{
+            ("Add Counter", AddCounter),
+            ("Reset Counters", ResetCounters),
+            ("Increment Counters", IncrementCounters),
+            ("Decrement Counters", DecrementCounters)
         };
     }
 
@@ -68,7 +97,7 @@
             if ((counterWidgets?.Count ?? 0) == 0)
             {
                 counterWidgets = new List<CounterWidgetModel>
-            {
+                {
                     new CounterWidgetModel()
                 };
             }

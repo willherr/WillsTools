@@ -1,10 +1,6 @@
+// just link the <script>s to cdnjs instead of hosting
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": [
-    {
-      "library": "font-awesome@5.12.1",
-      "destination": "wwwroot/lib/font-awesome"
-    }
-  ]
+  "libraries": []
 }

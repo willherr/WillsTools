@@ -11,7 +11,7 @@
 
             <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">@Title</h6>
 
-            <div class="btn-group float-right @(pageActions.Any() ? "" : "d-none")">
+            <div class="dropdown btn-group float-right @(pageActions.Any() ? "" : "d-none")">
                 <button id="PageActions" type="button" class="btn btn-secondary rounded py-0 px-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data->
                     <span class="fas fa-cog"></span>
                 </button>
@@ -60,5 +60,13 @@
         title = null;
         pageActions = new List<(string Name, Action Action)>();
         StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("MainLayout.initialize");
+        }
     }
 }
