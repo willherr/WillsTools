@@ -1,0 +1,64 @@
+﻿@page "/bottomsUp"
+@inject IJSRuntime JSRuntime
+
+@if (!initializing)
+{
+    <div style="1000px" class="row no-gutters flex-column-reverse text-right">
+        @foreach (var line in Content)
+        {
+            <p>@line</p>
+        }
+    </div>
+}
+
+@code {
+    private bool initializing = false;
+    private string[] Content = new string[]
+    {
+        "Typically, you read top to bottom, left to right. In some cultures, you read top to bottom, right to left. In Will's culture, you read bottom to top, right to left.",
+        "This is what Bottom's Up demonstrates. Just because we are used to something a certain way, doesn't mean that there can't be other completely valid ways to do something.",
+        "Also, I'm basically just coming up with stuff to say just to add content to this page because without the content, this page is totally confusing. So thank goodness for this content!",
+        "I can't believe you are still reading this at this point... But props to you for getting this far. I'm not even sure how I got this far..."
+    };
+
+    #region Initialization
+    private List<CounterWidgetModel> counterWidgets = new List<CounterWidgetModel>();
+    [CascadingParameter] MainLayout Layout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Layout.Reset();
+        Layout.Title = "Bottom's Up";
+
+        var punctuation = new char[] { ',', '.', '!', '?' };
+        for (var i = 0; i < Content.Length; i++)
+        {
+            var splitLine = Content[i].Split(' ');
+            for (var j = 0; j < splitLine.Length; j++)
+            {
+                var k = 0;
+                while (punctuation.Contains(splitLine[j].Last()))
+                {
+                    splitLine[j] = splitLine[j].Last() + splitLine[j].Substring(0, splitLine[j].Length - 1);
+                    if (++k == splitLine[j].Length)
+                    {
+                        break;
+                    }
+                }
+            }
+            Content[i] = string.Join(' ', splitLine.Reverse());
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("Utility.addClass", "app", "flex-column-reverse");
+            await JSRuntime.InvokeVoidAsync("Utility.scrollToBottom");
+        }
+    }
+    #endregion
+}

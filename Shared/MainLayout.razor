@@ -6,8 +6,7 @@
 
 <div class="main bg-light">
     <div class="card rounded-0">
-
-        <div class="card-header bg-white @(!string.IsNullOrEmpty(Title) || PageActions.Any() ? "" : "d-none")">
+        <div class="card-header bg-white @PageNavbarClass">
 
             <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">@Title</h6>
 
@@ -33,6 +32,23 @@
 </div>
 
 @code{
+    private string PageNavbarClass
+    {
+        get
+        {
+            if (PageActions.Any())
+            {
+                return string.Empty;
+            }
+            else if (!string.IsNullOrEmpty(Title))
+            {
+                return "d-md-none";
+            }
+
+            return "d-none";
+        }
+    }
+
     private string title;
     public string Title
     {
@@ -68,5 +84,6 @@
         {
             await JSRuntime.InvokeVoidAsync("MainLayout.initialize");
         }
+        await JSRuntime.InvokeVoidAsync("Utility.removeClass", "app", "flex-column-reverse");
     }
 }

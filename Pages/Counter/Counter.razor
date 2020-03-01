@@ -77,6 +77,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Layout.Reset();
         Layout.Title = "Counter";
         Layout.PageActions = new List<(string Name, Action Action)>
 {
@@ -97,7 +98,7 @@
             if ((counterWidgets?.Count ?? 0) == 0)
             {
                 counterWidgets = new List<CounterWidgetModel>
-                {
+            {
                     new CounterWidgetModel()
                 };
             }
