@@ -66,6 +66,18 @@
     <!-- End Single Page Apps for GitHub Pages -->
 
     <script>
+		window.Utility = {
+            scrollToBottom: function () {
+                window.scrollTo(0,document.body.scrollHeight);
+            },
+            addClass: function (targetSelector, cssClass) {
+                $(targetSelector).addClass(cssClass);
+            },
+            removeClass: function (targetSelector, cssClass) {
+                $(targetSelector).removeClass(cssClass);
+            }
+        };
+	
         window.MainLayout = {
             initialize: function () {
                 $('.dropdown').on('hide.bs.dropdown', function (e) {
