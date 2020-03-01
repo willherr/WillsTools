@@ -17,7 +17,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     @foreach (var pageAction in pageActions)
                     {
-                        <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
+                    <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
                     }
                 </div>
             </div>
@@ -84,6 +84,9 @@
         {
             await JSRuntime.InvokeVoidAsync("MainLayout.initialize");
         }
-        await JSRuntime.InvokeVoidAsync("Utility.removeClass", "app", "flex-column-reverse");
+        if (Title != "Bottom's Up")
+        {
+            await JSRuntime.InvokeVoidAsync("Utility.removeClass", "app", "flex-column-reverse");
+        }
     }
 }
