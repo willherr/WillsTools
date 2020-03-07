@@ -1,4 +1,6 @@
-﻿<div class="page-navbar">
+﻿@inject NavigationManager NavigationManager
+
+<div class="page-navbar">
     <div class="top-row pl-4 navbar navbar-dark">
         <a class="navbar-brand" href=""><i class="fas fa-tools fa-lg mr-4"></i>Will's Tools</a>
         <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -8,9 +10,17 @@
 
     <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
         <ul class="nav flex-column">
+            @if (NavigationManager.Uri.Contains("localhost"))
+            {
+            <li class="nav-item py-0">
+                <NavLink class="nav-link rounded-0" href="testCode">
+                    <span class="fas fa-vial mr-2" aria-hidden="true"></span> Test Code
+                </NavLink>
+            </li>
+            }
             <li class="nav-item py-0">
                 <NavLink class="nav-link rounded-0" href="counter">
-                    <span class="fas fa-minus mr-2" aria-hidden="true"></span> Counter <span class="fas fa-plus ml-2" aria-hidden="true"></span> 
+                    <span class="fas fa-minus mr-2" aria-hidden="true"></span> Counter <span class="fas fa-plus ml-2" aria-hidden="true"></span>
                 </NavLink>
             </li>
             <li class="nav-item py-0">

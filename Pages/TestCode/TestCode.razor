@@ -1,0 +1,50 @@
+﻿@page "/testCode"
+
+<h3>TestCode</h3>
+<button class="btn btn-primary" @onclick="(e => _children = _tests.RunSingleJoinTest())">Run</button>
+<hr />
+<h6>Test 1</h6>
+<ul>
+    @foreach (var item in _children)
+    {
+        <li>
+            Child: @item.Id - Parent: @item.Parent?.Id
+        </li>
+    }
+</ul>
+<h6>Test 2</h6>
+<ul>
+    @foreach (var item in _parents)
+    {
+        <li>
+            Parent: @item.Id
+            @if (item.Children?.Count > 0)
+            {
+                <ul>
+                    @foreach (var child in item.Children)
+                    {
+                        <li>
+                            Child: @child.Id
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+
+@code {
+    private TestCodeModel _tests;
+    private IEnumerable<ChildItem> _children;
+    private IEnumerable<ParentItem> _parents;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _tests = new TestCodeModel();
+        _children = _tests.RunSingleJoinTest();
+        _parents = _tests.RunManyJoinTest();
+    }
+}
