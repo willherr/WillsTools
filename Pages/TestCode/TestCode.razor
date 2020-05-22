@@ -18,7 +18,7 @@
     {
         <li>
             Parent: @item.Id
-            @if (item.Children?.Count > 0)
+            @if (item.Children?.Any() == true)
             {
                 <ul>
                     @foreach (var child in item.Children)

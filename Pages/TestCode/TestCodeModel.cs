@@ -55,7 +55,7 @@ namespace WillsToolsWasm.Pages.TestCode
 
     public static class JoinExtensions
     {
-        public static IEnumerable<T> SingleJoin<T, R>(this (IEnumerable<T>, IEnumerable<R>) self, Func<T, object> keySelector, Func<R, object> foreignKeySelector, Action<T, R> assignmentAction)
+        public static IEnumerable<T> SingleJoin<T, R, Key>(this (IEnumerable<T>, IEnumerable<R>) self, Func<T, Key> keySelector, Func<R, Key> foreignKeySelector, Action<T, R> assignmentAction)
         {
             var tDict = self.Item1.GroupBy(keySelector).ToDictionary(tGroup => tGroup.Key, tGroup => tGroup);
             var rGroups = self.Item2.GroupBy(foreignKeySelector);
@@ -74,7 +74,7 @@ namespace WillsToolsWasm.Pages.TestCode
             return self.Item1;
         }
 
-        public static IEnumerable<T> ManyJoin<T, R>(this (IEnumerable<T>, IEnumerable<R>) self, Func<T, object> keySelector, Func<R, object> foreignKeySelector, Action<T, IEnumerable<R>> assignmentAction)
+        public static IEnumerable<T> ManyJoin<T, R, Key>(this (IEnumerable<T>, IEnumerable<R>) self, Func<T, Key> keySelector, Func<R, Key> foreignKeySelector, Action<T, IEnumerable<R>> assignmentAction)
         {
             var tDict = self.Item1.GroupBy(keySelector).ToDictionary(tGroup => tGroup.Key, tGroup => tGroup);
             var rGroups = self.Item2.GroupBy(foreignKeySelector);
