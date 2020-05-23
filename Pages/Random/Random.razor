@@ -1,29 +1,30 @@
 ﻿@page "/random"
 @inject HttpClient Http
 
-<EditForm Model="RandomListModel" OnValidSubmit="RandomListModel.AddInputToList" class="mb-2">
-    <div class="row no-gutters align-items-baseline">
-        <label class="mr-4">
-            Add an entry to your random list:
-            <InputText @bind-Value="RandomListModel.Input"></InputText>
-        </label>
+<div class="mx-2">
+    <EditForm Model="RandomListModel" OnValidSubmit="RandomListModel.AddInputToList" class="mb-4">
+        <div class="row no-gutters align-items-baseline">
+            <label class="mr-4">
+                Random item:
+                <InputText @bind-Value="RandomListModel.Input"></InputText>
+            </label>
 
-        <button @onclick="e => RandomListModel.Randomize()" type="button" class="mr-2 btn btn-primary">Randomize!</button>
-        <span class="mr-2">=></span>
-        <span class="h-100" style="min-width: 20px; border-bottom: 1px solid grey">@(RandomListModel.RandomItem ?? "... what are you waiting for?")</span>
-    </div>
-</EditForm>
+            <button @onclick="e => RandomListModel.Randomize()" type="button" class="mr-4 btn btn-primary">Randomize!</button>
+            <span class="h-100 font-weight-bold" style="min-width: 20px; border-bottom: 1px solid grey">@(RandomListModel.RandomItem ?? "...")</span>
+        </div>
+    </EditForm>
 
-@if (RandomListModel.Items.Any())
-{
-    <label>Your random list:</label>
-    <ol>
-        @foreach (var item in RandomListModel.Items)
-        {
-            <li>@item</li>
-        }
-    </ol>
-}
+    @if (RandomListModel.Items.Any())
+    {
+        <label>Your random list:</label>
+        <ol>
+            @foreach (var item in RandomListModel.Items)
+            {
+                <li>@item</li>
+            }
+        </ol>
+    }
+</div>
 
 @code {
     public RandomListModel RandomListModel { get; set; }
@@ -42,11 +43,16 @@
         Layout.Reset();
         Layout.Title = "Random";
         Layout.PageActions = new List<(string Name, Action Action)>
-    {
-            ("Randomize a list", InitRandomizeAList)
-        };
+{
+        ("Randomize a list", InitRandomizeAList)
+    };
 
         Layout.PageActions[0].Action();
+        GetRandomWord().ContinueWith(word =>
+        {
+            RandomListModel.RandomItem = word.Result;
+            StateHasChanged();
+        });
     }
 
     private async Task<string> GetRandomWord()

@@ -12,10 +12,13 @@
                 <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">
                     @Title
                 </h6>
-                <h6 class="d-inline-block mb-0 @(string.IsNullOrEmpty(SubTitle) ? "d-none" : "")">
-                    <span class="d-inline-block d-md-none">-</span>
-                    @SubTitle
-                </h6>
+                @if (!string.IsNullOrEmpty(SubTitle))
+                {
+                    <h6 class="d-inline-block mb-0">
+                        <span class="d-inline-block d-md-none">-</span>
+                        @SubTitle
+                    </h6>
+                }
             </div>
 
             <div class="dropdown btn-group float-right @(pageActions.Any() ? "" : "d-none")">
