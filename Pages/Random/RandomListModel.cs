@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using SysRandom = System.Random;
 
@@ -9,22 +10,14 @@ namespace WillsToolsWasm.Pages.Random
     public class RandomListModel
     {
         private static readonly SysRandom Random = new SysRandom();
-        private Func<Task<string>> getRandomWord;
-        private Action stateHasChanged;
 
-        public List<string> Items { get; set; } = new List<string>();
+        public List<RandomItem> Items { get; set; } = new List<RandomItem>();
         public string Input { get; set; }
         public string RandomItem { get; set; }
 
-        public RandomListModel(Func<Task<string>> getRandomWord, Action stateHasChanged)
-        {
-            this.getRandomWord = getRandomWord;
-            this.stateHasChanged = stateHasChanged;
-        }
-
         public void AddInputToList()
         {
-            Items.Add(Input);
+            Items.Add(new RandomItem(Input));
             Input = null;
         }
 
@@ -32,16 +25,105 @@ namespace WillsToolsWasm.Pages.Random
         {
             if (Items.Count == 0)
             {
-                getRandomWord().ContinueWith(randomWord =>
-                {
-                    RandomItem = randomWord.Result;
-                    stateHasChanged();
-                });
+                RandomItem = "This button will randomly re-order your list.";
             }
             else
             {
-                RandomItem = Items[Random.Next(Items.Count)];
+                var n = Items.Count;
+                while (n > 1)
+                {
+                    n--;
+                    var k = Random.Next(n + 1);
+                    var value = Items[k];
+                    Items[k] = Items[n];
+                    Items[n] = value;
+                }
+
+                RandomItem = "Randomly re-ordered your list!";
             }
+        }
+
+        public void Get()
+        {
+            var currentItems = Items.Where(i => !i.Popped);
+            if (Items.Count == 0)
+            {
+                RandomItem = "This button will return a random item from your list.";
+            }
+            else if (currentItems.Any())
+            {                
+                RandomItem = currentItems.ElementAt(Random.Next(currentItems.Count())).Name;
+            }
+            else
+            {
+                RandomItem = "You have no active items to get :(";
+            }
+        }
+
+        public void Pop()
+        {
+            var currentItems = Items.Where(i => !i.Popped);
+            if (Items.Count == 0)
+            {
+                RandomItem = "Pop is a coding term which means to remove the element on top and return it. This button means to remove a random item from your list and return it.";
+            }
+            else if (currentItems.Any())
+            {
+                var item = currentItems.ElementAt(Random.Next(currentItems.Count()));
+                RandomItem = item.Name;
+                item.Popped = true;
+            }
+            else
+            {
+                RandomItem = "You have no active items to pop :(";
+            }
+        }
+
+        public void Reset(bool clearItems = true)
+        {
+            if (clearItems)
+            {
+                if (Items.Count == 0)
+                {
+                    RandomItem = "This button will remove all items from your list.";
+                }
+                else
+                {
+                    Items.Clear();
+                    RandomItem = "Cleared your list!";
+                }
+            }
+            else
+            {
+                if (Items.Count == 0)
+                {
+                    RandomItem = "This button will put your items back to original order and activate any that got popped.";
+                }
+                else
+                {
+                    Items = Items.OrderBy(i =>
+                    {
+                        i.Popped = false;
+                        return i.Id;
+                    }).ToList();
+                    RandomItem = "Reset your list!";
+                }
+            }
+        }
+    }
+
+    public class RandomItem
+    {
+        public static int idGenerator = 0;
+
+        public int Id;
+        public string Name { get; set; }
+        public bool Popped { get; set; }
+
+        public RandomItem(string name)
+        {
+            Id = Interlocked.Increment(ref idGenerator);
+            Name = name;
         }
     }
 }

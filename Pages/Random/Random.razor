@@ -3,27 +3,37 @@
 
 <div class="mx-2">
     <EditForm Model="RandomListModel" OnValidSubmit="RandomListModel.AddInputToList" class="mb-4">
-        <div class="row no-gutters align-items-baseline">
-            <label class="mr-4">
-                Random item:
-                <InputText @bind-Value="RandomListModel.Input"></InputText>
-            </label>
-
-            <button @onclick="e => RandomListModel.Randomize()" type="button" class="mr-4 btn btn-primary">Randomize!</button>
-            <span class="h-100 font-weight-bold" style="min-width: 20px; border-bottom: 1px solid grey">@(RandomListModel.RandomItem ?? "...")</span>
-        </div>
+        <InputText placeholder="Enter a random item" @bind-Value="RandomListModel.Input"></InputText>
     </EditForm>
 
     @if (RandomListModel.Items.Any())
     {
-        <label>Your random list:</label>
-        <ol>
+        <ol class="mb-4">
             @foreach (var item in RandomListModel.Items)
             {
-                <li>@item</li>
+                <li>
+                    @if (item.Popped)
+                    {
+                        <del>@item.Name</del>
+                    }
+                    else
+                    {
+                        <span>@item.Name</span>
+                    }
+                </li>
             }
         </ol>
     }
+
+    <div class="row no-gutters">
+        <button @onclick="_ => RandomListModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
+        <button @onclick="_ => RandomListModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
+        <button @onclick="_ => RandomListModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
+        <button @onclick="_ => RandomListModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
+        <button @onclick="_ => RandomListModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
+    </div>
+
+    <div class="h-100 font-weight-bold rounded border p-1 border-primary">@(RandomListModel.RandomItem ?? "...")</div>
 </div>
 
 @code {
@@ -37,7 +47,7 @@
 
     protected override void OnInitialized()
     {
-        RandomListModel = new RandomListModel(GetRandomWord, StateHasChanged);
+        RandomListModel = new RandomListModel();
 
         base.OnInitialized();
         Layout.Reset();
