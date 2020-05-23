@@ -1,5 +1,6 @@
 ﻿@page "/random"
 @inject HttpClient Http
+@inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
 <div class="mx-2">
     <EditForm Model="RandomListModel" OnValidSubmit="RandomListModel.AddInputToList" class="mb-4">
@@ -47,15 +48,15 @@
 
     protected override void OnInitialized()
     {
-        RandomListModel = new RandomListModel();
+        RandomListModel = localStorage.ContainKey(nameof(RandomListModel)) ? localStorage.GetItem<RandomListModel>(nameof(RandomListModel)) : new RandomListModel();
 
         base.OnInitialized();
         Layout.Reset();
         Layout.Title = "Random";
         Layout.PageActions = new List<(string Name, Action Action)>
-{
-        ("Randomize a list", InitRandomizeAList)
-    };
+        {
+            ("Randomize a list", InitRandomizeAList)
+        };
 
         Layout.PageActions[0].Action();
         GetRandomWord().ContinueWith(word =>
@@ -63,6 +64,16 @@
             RandomListModel.RandomItem = word.Result;
             StateHasChanged();
         });
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (!firstRender)
+        {
+            localStorage.SetItem(nameof(RandomListModel), RandomListModel);
+        }
     }
 
     private async Task<string> GetRandomWord()

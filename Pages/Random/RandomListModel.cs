@@ -51,7 +51,7 @@ namespace WillsToolsWasm.Pages.Random
                 RandomItem = "This button will return a random item from your list.";
             }
             else if (currentItems.Any())
-            {                
+            {
                 RandomItem = currentItems.ElementAt(Random.Next(currentItems.Count())).Name;
             }
             else
@@ -114,12 +114,29 @@ namespace WillsToolsWasm.Pages.Random
 
     public class RandomItem
     {
-        public static int idGenerator = 0;
+        private static int idGenerator = 0;
+        private static readonly object locker = new object();
 
-        public int Id;
+        private int id;
+        public int Id
+        {
+            get => id;
+            set
+            {
+                lock (locker)
+                {
+                    if (idGenerator < value)
+                    {
+                        idGenerator = value;
+                    }
+                    id = value;
+                }
+            }
+        }
         public string Name { get; set; }
         public bool Popped { get; set; }
 
+        public RandomItem() { }
         public RandomItem(string name)
         {
             Id = Interlocked.Increment(ref idGenerator);
