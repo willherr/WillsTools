@@ -13,7 +13,7 @@
             @if (NavigationManager.Uri.Contains("localhost"))
             {
                 <li class="nav-item py-0">
-                    <NavLink class="nav-link rounded-0" href="testCode">
+                    <NavLink class="nav-link rounded-0" href="test-code">
                         <span class="fas fa-vial mr-2" aria-hidden="true"></span> Test Code
                     </NavLink>
                 </li>
@@ -24,7 +24,12 @@
                 </NavLink>
             </li>
             <li class="nav-item py-0">
-                <NavLink class="nav-link rounded-0" href="bottomsUp">
+                <NavLink class="nav-link rounded-0" href="random">
+                    <span class="fas fa-dice-@randomDieNumber mr-2" aria-hidden="true"></span> Random 
+                </NavLink>
+            </li>
+            <li class="nav-item py-0">
+                <NavLink class="nav-link rounded-0" href="bottoms-up">
                     <span class="fas fa-long-arrow-alt-up mr-1" aria-hidden="true"></span> Bottom's Up
                 </NavLink>
             </li>
@@ -34,6 +39,21 @@
 
 @code {
     private bool collapseNavMenu = true;
+    private string randomDieNumber
+    {
+        get
+        {
+            switch (new Random().Next(6) + 1)
+            {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                case 4: return "four";
+                case 5: return "five";
+                default: return "six";
+            }
+        }
+    }
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

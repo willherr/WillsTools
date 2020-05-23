@@ -8,7 +8,15 @@
     <div class="card rounded-0">
         <div class="card-header bg-white @PageNavbarClass">
 
-            <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">@Title</h6>
+            <div class="d-inline-block">
+                <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">
+                    @Title
+                </h6>
+                <h6 class="d-inline-block mb-0 @(string.IsNullOrEmpty(SubTitle) ? "d-none" : "")">
+                    <span class="d-inline-block d-md-none">-</span>
+                    @SubTitle
+                </h6>
+            </div>
 
             <div class="dropdown btn-group float-right @(pageActions.Any() ? "" : "d-none")">
                 <button id="PageActions" type="button" class="btn btn-secondary rounded py-0 px-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data->
@@ -17,7 +25,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     @foreach (var pageAction in pageActions)
                     {
-                    <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
+                        <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
                     }
                 </div>
             </div>
@@ -60,6 +68,17 @@
         }
     }
 
+    private string subTitle;
+    public string SubTitle
+    {
+        get => subTitle;
+        set
+        {
+            subTitle = value;
+            StateHasChanged();
+        }
+    }
+
     private List<(string Name, Action Action)> pageActions = new List<(string Name, Action Action)>();
     public List<(string Name, Action Action)> PageActions
     {
@@ -73,6 +92,7 @@
 
     public void Reset()
     {
+        subTitle = null;
         title = null;
         pageActions = new List<(string Name, Action Action)>();
         StateHasChanged();

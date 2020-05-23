@@ -1,0 +1,25 @@
+﻿@page "/random"
+
+
+
+@code {
+    [CascadingParameter] MainLayout Layout { get; set; }
+
+    private void InitRandomizeAList()
+    {
+        Layout.SubTitle = "List";
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Layout.Reset();
+        Layout.Title = "Random";
+        Layout.PageActions = new List<(string Name, Action Action)>
+        {
+            ("Randomize a list", InitRandomizeAList)
+        };
+
+        Layout.PageActions[0].Action();
+    }
+}
