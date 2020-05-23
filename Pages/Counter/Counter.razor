@@ -1,15 +1,15 @@
 ﻿@page "/counter"
-@*@inject ProtectedSessionStorage ProtectedSessionStore*@
 @inject IJSRuntime JSRuntime
+@inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
 @if (!initializing)
 {
     <div class="row no-gutters justify-content-center">
-        @if (counterWidgets.Count == 0)
+        @if (CounterWidgets.Count == 0)
         {
             <span class="text-info text-center">Click the options button to add some counters!</span>
         }
-        @foreach (var counterWidget in counterWidgets)
+        @foreach (var counterWidget in CounterWidgets)
         {
             <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
         }
@@ -22,56 +22,52 @@
 
     private void RemoveCounter(int id)
     {
-        counterWidgets.RemoveAt(id - 1);
-        for (int i = 1; i <= counterWidgets.Count; i++)
+        CounterWidgets.RemoveAt(id - 1);
+        for (int i = 1; i <= CounterWidgets.Count; i++)
         {
-            counterWidgets[i - 1].Id = i;
+            CounterWidgets[i - 1].Id = i;
         }
-        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
     }
 
     private void ChangeCounter(CounterWidgetModel counter)
     {
         if (!ignoreChanges)
         {
-            counterWidgets[counter.Id - 1] = counter;
-            //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
+            CounterWidgets[counter.Id - 1] = counter;
         }
     }
 
     private void AddCounter()
     {
-        counterWidgets.Add(new CounterWidgetModel(counterWidgets.Count + 1)
+        CounterWidgets.Add(new CounterWidgetModel(CounterWidgets.Count + 1)
         {
             OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter)
         });
-        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
     }
 
     private void ResetCounters()
     {
         ignoreChanges = true;
-        counterWidgets.ForEach(counter => counter.CurrentCount = 0);
+        CounterWidgets.ForEach(counter => counter.CurrentCount = 0);
         ignoreChanges = false;
-        //_ = ProtectedSessionStore.SetAsync("counters", counterWidgets);
     }
 
     private void IncrementCounters()
     {
         ignoreChanges = true;
-        counterWidgets.ForEach(counter => counter.CurrentCount++);
+        CounterWidgets.ForEach(counter => counter.CurrentCount++);
         ignoreChanges = false;
     }
 
     private void DecrementCounters()
     {
         ignoreChanges = true;
-        counterWidgets.ForEach(counter => counter.CurrentCount--);
+        CounterWidgets.ForEach(counter => counter.CurrentCount--);
         ignoreChanges = false;
     }
 
     #region Initialization
-    private List<CounterWidgetModel> counterWidgets = new List<CounterWidgetModel>();
+    private List<CounterWidgetModel> CounterWidgets { get; set; }
     [CascadingParameter] MainLayout Layout { get; set; }
 
     protected override void OnInitialized()
@@ -86,6 +82,7 @@
             ("Increment Counters", IncrementCounters),
             ("Decrement Counters", DecrementCounters)
         };
+        CounterWidgets = localStorage.ContainKey(nameof(CounterWidgets)) ? localStorage.GetItem<List<CounterWidgetModel>>(nameof(CounterWidgets)) : new List<CounterWidgetModel>();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,23 +90,25 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            //counterWidgets = await ProtectedSessionStore.GetAsync<List<CounterWidgetModel>>("counters");
-
-            if ((counterWidgets?.Count ?? 0) == 0)
+            if ((CounterWidgets?.Count ?? 0) == 0)
             {
-                counterWidgets = new List<CounterWidgetModel>
-            {
+                CounterWidgets = new List<CounterWidgetModel>
+                {
                     new CounterWidgetModel()
                 };
             }
 
-            foreach (var counterWidget in counterWidgets)
+            foreach (var counterWidget in CounterWidgets)
             {
                 counterWidget.OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter);
             }
 
             initializing = false;
             StateHasChanged();
+        }
+        else
+        {
+            localStorage.SetItem(nameof(CounterWidgets), CounterWidgets);
         }
     }
     #endregion
