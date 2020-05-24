@@ -18,11 +18,14 @@
     const loadingInterval = setInterval(function () {
         if (!$loading.length) {
             // app loaded!
-            $("#AD_NATIVE_BANNER_CONTAINER").removeClass("d-none");
             clearInterval(loadingInterval);
-            setTimeout(function () {
-                $("#HIDE_ADS").removeClass("d-none");
-            }, 2000);
+
+            if (!localStorage.getItem("NO_ADS")) {
+                $("#AD_NATIVE_BANNER_CONTAINER").removeClass("d-none");
+                setTimeout(function () {
+                    $("#HIDE_ADS").removeClass("d-none");
+                }, 2000);
+            }
         } else {
             let loadingText = variations[variation];
 
@@ -45,7 +48,7 @@
         $loading = $("#LOADING");
     }, 500);
 
-/* private functions */
+    /* private functions */
     function sleep(time) {
         return new Promise(resolve => setTimeout(resolve, time));
     }
