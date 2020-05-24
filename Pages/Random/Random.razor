@@ -28,7 +28,7 @@
                     <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
                     @if (item.Popped)
                     {
-                        <del class="text-secondary">item.Name</del>
+                        <del class="text-secondary">@item.Name</del>
                     }
                     else
                     {
