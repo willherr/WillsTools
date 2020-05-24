@@ -14,16 +14,30 @@ namespace WillsToolsWasm.Pages.Random
 
         public List<RandomItem> Items { get; set; } = new List<RandomItem>();
         public string Input { get; set; }
+        public string InputRangeStart { get; set; }
+        public string InputRangeEnd { get; set; }
         public string RandomItem { get; set; }
 
         public void AddInputToList()
         {
-            if (string.IsNullOrEmpty(Input))
+            switch (InputType)
             {
-                return;
+                case InputType.OneAtATime:
+                    if (!string.IsNullOrEmpty(Input))
+                    {
+                        Items.Add(new RandomItem(Input));
+                        Input = null;
+                    }
+                    break;
+                case InputType.Range:
+                    if (!string.IsNullOrEmpty(InputRangeStart) && !string.IsNullOrEmpty(InputRangeEnd))
+                    {
+                        Items.AddRange(GetRandomRange(InputRangeStart, InputRangeEnd).Select(s => new RandomItem(s)));
+                        InputRangeStart = null;
+                        InputRangeEnd = null;
+                    }
+                    break;
             }
-            Items.Add(new RandomItem(Input));
-            Input = null;
         }
 
         public void Randomize()
@@ -115,38 +129,224 @@ namespace WillsToolsWasm.Pages.Random
                 }
             }
         }
-    }
 
-    public class RandomItem
-    {
-        private static int idGenerator = 0;
-        private static readonly object locker = new object();
-
-        private int id;
-        public int Id
+        // stolen from Will's Tools Android
+        public List<string> GetRandomRange(string strStart, string strEnd)
         {
-            get => id;
-            set
+            // A1:Z13
+            // A:F
+            // 0:39
+            // A1:24 X not sure how to interpret this
+
+            List<List<string>> rangechunks = new List<List<string>>();
+
+            string word1, word2;
+            bool isNumeric1, isNumeric2;
+
+            while (true)
             {
-                lock (locker)
+                strStart = GetAlphaOrNumericWord(strStart, out word1, out isNumeric1);
+                strEnd = GetAlphaOrNumericWord(strEnd, out word2, out isNumeric2);
+
+                if (isNumeric1 && isNumeric2) // both results are numeric
                 {
-                    if (idGenerator < value)
+                    rangechunks.Add(GetRange(int.Parse(word1), int.Parse(word2)));
+                }
+                else
+                {
+                    rangechunks.Add(GetRange(word1, word2));
+                }
+
+                // exit loop in this case           
+                if (string.IsNullOrEmpty(strStart) || string.IsNullOrEmpty(strEnd))
+                {
+                    if (string.IsNullOrEmpty(strStart) && string.IsNullOrEmpty(strEnd) == false)
                     {
-                        idGenerator = value;
+                        rangechunks.Add(new List<string> { strEnd });
                     }
-                    id = value;
+                    else if (string.IsNullOrEmpty(strEnd) && string.IsNullOrEmpty(strStart) == false)
+                    {
+                        rangechunks.Add(new List<string> { strStart });
+                    }
+
+                    List<string> range = new List<string>();
+
+                    foreach (List<string> rangeChunk in rangechunks)
+                    {
+                        if (range.Count == 0)
+                        {
+                            foreach (string str in rangeChunk)
+                            {
+                                range.Add(str);
+                            }
+                        }
+                        else
+                        {
+                            List<string> nextRange = new List<string>();
+                            foreach (string beginningWord in range)
+                            {
+                                nextRange = nextRange.Concat(GetPermutations(beginningWord, rangeChunk)).ToList();
+                            }
+                            range = nextRange;
+                        }
+                    }
+
+                    return range;
                 }
             }
         }
-        public string Name { get; set; }
-        public bool Popped { get; set; }
 
-        public RandomItem() { }
-        public RandomItem(string name)
+        public string GetAlphaOrNumericWord(string word, out string result, out bool isNumeric)
         {
-            Id = Interlocked.Increment(ref idGenerator);
-            Name = name;
+            result = string.Empty;
+            isNumeric = false;
+
+            string newWord = string.Empty;
+            bool foundLetter = false;
+            foreach (char c in word)
+            {
+                if (char.IsDigit(c) && foundLetter == false)
+                {
+                    isNumeric = true;
+                    result += c;
+                }
+                else if (char.IsDigit(c) == false && isNumeric == false)
+                {
+                    foundLetter = true;
+                    result += c;
+                }
+                else
+                {
+                    newWord += c;
+                }
+            }
+
+            return newWord;
         }
+
+        private List<string> GetRange(string longerWord, string shorterWord)
+        {
+            if (longerWord.Length < shorterWord.Length)
+            {
+                string temp = longerWord;
+                longerWord = shorterWord;
+                shorterWord = temp;
+            }
+
+            List<List<string>> strResult = new List<List<string>>();
+            for (int i = 0; i < shorterWord.Length; i++)
+            {
+                int start = (int)shorterWord[i];
+                int end = (int)longerWord[i];
+
+                if (start > end)
+                {
+                    int temp = start;
+                    start = end;
+                    end = temp;
+                }
+
+                List<string> strList = new List<string>();
+                for (int j = start; j <= end; j++)
+                {
+                    strList.Add(((char)j).ToString());
+                }
+
+                strResult.Add(strList);
+            }
+
+            for (int i = shorterWord.Length; i < longerWord.Length; i++)
+            {
+                strResult.Add(new List<string>() { longerWord[i].ToString() });
+            }
+
+            List<string> rangeResult = new List<string>();
+            foreach (List<string> strList in strResult)
+            {
+                if (rangeResult.Count == 0)
+                {
+                    foreach (string str in strList)
+                    {
+                        rangeResult.Add(str);
+                    }
+                }
+                else
+                {
+                    List<string> nextRangeResult = new List<string>();
+                    foreach (string beginningWord in rangeResult)
+                    {
+                        nextRangeResult = nextRangeResult.Concat(GetPermutations(beginningWord, strList)).ToList();
+                    }
+                    rangeResult = nextRangeResult;
+                }
+            }
+
+            return rangeResult;
+        }
+
+        private List<string> GetPermutations(string beginningWord, List<string> nextPartList)
+        {
+            List<string> result = new List<string>();
+
+            foreach (string str in nextPartList)
+            {
+                result.Add(string.Concat(beginningWord, str));
+            }
+
+            return result;
+        }
+
+        private List<string> GetRange(int start, int end)
+        {
+            List<string> rangeResult = new List<string>();
+
+            if (start > end)
+            {
+                // swap these values to make sense
+                int temp = start;
+                start = end;
+                end = temp;
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                rangeResult.Add(i.ToString());
+            }
+
+            return rangeResult;
+        }
+    }
+}
+
+public class RandomItem
+{
+    private static int idGenerator = 0;
+    private static readonly object locker = new object();
+
+    private int id;
+    public int Id
+    {
+        get => id;
+        set
+        {
+            lock (locker)
+            {
+                if (idGenerator < value)
+                {
+                    idGenerator = value;
+                }
+                id = value;
+            }
+        }
+    }
+    public string Name { get; set; }
+    public bool Popped { get; set; }
+
+    public RandomItem() { }
+    public RandomItem(string name)
+    {
+        Id = Interlocked.Increment(ref idGenerator);
+        Name = name;
     }
 }
 
