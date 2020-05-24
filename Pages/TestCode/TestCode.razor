@@ -1,4 +1,6 @@
 ﻿@page "/test-code"
+@inject ISyncLocalStorageService localStorage
+@inject NavigationManager navigationManager
 
 <h3>TestCode</h3>
 <button class="btn btn-primary" @onclick="(e => _children = _tests.RunSingleJoinTest())">Run</button>
@@ -43,6 +45,7 @@
     {
         base.OnInitialized();
 
+        localStorage.SetItem("NO_ADS", true);
         _tests = new TestCodeModel();
         _children = _tests.RunSingleJoinTest();
         _parents = _tests.RunManyJoinTest();
