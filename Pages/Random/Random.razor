@@ -3,63 +3,88 @@
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
 <div class="mx-2">
-    <EditForm Model="RandomListModel" OnValidSubmit="RandomListModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
-        <InputText class="mr-2 pl-1" placeholder="Enter a random item" @bind-Value="RandomListModel.Input"></InputText>
-        <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
-    </EditForm>
-
-    @if (RandomListModel.Items.Any())
+    @switch (ViewModel.InputType)
     {
-        <ol class="mb-4">
-            @foreach (var item in RandomListModel.Items)
+        case InputType.OneAtATime:
+            <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
+                <InputText class="col col-lg-6 mr-2 pl-1" placeholder="Enter a random item" @bind-Value="ViewModel.Input"></InputText>
+                <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+            </EditForm>
+            break;
+
+        case InputType.Range:
+            <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
+                <InputText class="col col-lg-6 mr-2 pl-1" placeholder="RANGE TODO" @bind-Value="ViewModel.Input"></InputText>
+                <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+            </EditForm>
+            break;
+    }
+
+    @if (ViewModel.Items.Any())
+    {
+        <ol class="mb-4 list-unstyled ml-4">
+            @foreach (var item in ViewModel.Items)
             {
                 <li>
+                    <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
                     @if (item.Popped)
                     {
-                        <del class="mr-2">@item.Name</del>
+                        <del class="text-secondary">item.Name</del>
                     }
                     else
                     {
-                        <span class="mr-2">@item.Name</span>
+                        <span>@item.Name</span>
                     }
-                    <i class="fas fa-times btn p-0 text-danger" @onclick="_ => RandomListModel.Items.Remove(item)"></i>
                 </li>
             }
         </ol>
     }
 
-    <div class="row no-gutters">
-        <button @onclick="_ => RandomListModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
-        <button @onclick="_ => RandomListModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
-        <button @onclick="_ => RandomListModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
-        <button @onclick="_ => RandomListModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
-        <button @onclick="_ => RandomListModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
+    <div class="row no-gutters col col-lg-6 justify-content-between p-0">
+        <div class="row no-gutters">
+            <button @onclick="_ => ViewModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
+            <button @onclick="_ => ViewModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
+            <button @onclick="_ => ViewModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
+        </div>
+        <div class="row no-gutters">
+            <button @onclick="_ => ViewModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
+            <button @onclick="_ => ViewModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
+        </div>
     </div>
 
-    <div class="h-100 font-weight-bold rounded border p-1 border-primary">@(RandomListModel.RandomItem ?? "...")</div>
+    <div class="row no-gutters">
+        <div class="h-100 font-weight-bold rounded border p-1 border-primary col-lg-6 col">@(ViewModel.RandomItem ?? "...")</div>
+    </div>
 </div>
 
 @code {
-    public RandomListModel RandomListModel { get; set; }
+    public RandomViewModel ViewModel { get; set; }
     [CascadingParameter] MainLayout Layout { get; set; }
 
-    private void InitRandomizeAList()
+    private void InitOneAtATime()
     {
-        Layout.SubTitle = "List";
+        Layout.SubTitle = "One-at-a-time";
+        ViewModel.InputType = InputType.OneAtATime;
+    }
+
+    private void InitRange()
+    {
+        Layout.SubTitle = "Range";
+        ViewModel.InputType = InputType.Range;
     }
 
     protected override void OnInitialized()
     {
-        if (localStorage.ContainKey(nameof(RandomListModel)))
+        if (localStorage.ContainKey(nameof(ViewModel)))
         {
-            RandomListModel = localStorage.GetItem<RandomListModel>(nameof(RandomListModel));
+            ViewModel = localStorage.GetItem<RandomViewModel>(nameof(ViewModel));
         }
         else
         {
-            RandomListModel = new RandomListModel
+            ViewModel = new RandomViewModel
             {
                 Items = new List<RandomItem>
-                {
+{
                     new RandomItem("Stars"),
                     new RandomItem("Diamonds"),
                     new RandomItem("Hearts"),
@@ -69,20 +94,23 @@
             };
         }
 
+        GetRandomWord().ContinueWith(word =>
+        {
+            ViewModel.RandomItem = word.Result;
+            StateHasChanged();
+        });
+
         base.OnInitialized();
         Layout.Reset();
         Layout.Title = "Random";
         Layout.PageActions = new List<(string Name, Action Action)>
-        {
-            ("Randomize a list", InitRandomizeAList)
+    {
+            ("One-at-a-time", InitOneAtATime),
+            ("Range", InitRange)
         };
 
-        Layout.PageActions[0].Action();
-        GetRandomWord().ContinueWith(word =>
-        {
-            RandomListModel.RandomItem = word.Result;
-            StateHasChanged();
-        });
+        Layout.PageActions[(int)ViewModel.InputType].Action();
+        Debug.WriteLine(ViewModel.InputType);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -91,7 +119,8 @@
 
         if (!firstRender)
         {
-            localStorage.SetItem(nameof(RandomListModel), RandomListModel);
+            localStorage.SetItem(nameof(ViewModel), ViewModel);
+            Debug.WriteLine(ViewModel.InputType);
         }
     }
 

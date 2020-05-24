@@ -7,9 +7,10 @@ using SysRandom = System.Random;
 
 namespace WillsToolsWasm.Pages.Random
 {
-    public class RandomListModel
+    public class RandomViewModel
     {
         private static readonly SysRandom Random = new SysRandom();
+        public InputType InputType { get; set; } = InputType.OneAtATime;
 
         public List<RandomItem> Items { get; set; } = new List<RandomItem>();
         public string Input { get; set; }
@@ -17,6 +18,10 @@ namespace WillsToolsWasm.Pages.Random
 
         public void AddInputToList()
         {
+            if (string.IsNullOrEmpty(Input))
+            {
+                return;
+            }
             Items.Add(new RandomItem(Input));
             Input = null;
         }
@@ -144,3 +149,9 @@ namespace WillsToolsWasm.Pages.Random
         }
     }
 }
+
+public enum InputType
+{
+    OneAtATime = 0,
+    Range = 1
+};
