@@ -10,15 +10,19 @@
         ["Is", "Is your", "Is your wifi", "Is your wifi down", "Is your wifi down?", "Is your wifi down?", "Is your wifi down?", "Is your wifi down??", "Is your wifi down???", "Is your wifi down????", "Is your wifi down?????"]
     ];
     const $image = $("app a");
-    const $loading = $("#LOADING").text('');
+    let $loading = $("#LOADING").text('');
     let counter = 0;
     let variation = 0;
 
     /* main */
-    let loadingInterval = setInterval(async function () {
-
+    const loadingInterval = setInterval(function () {
         if (!$loading.length) {
+            // app loaded!
+            $("#AD_NATIVE_BANNER_CONTAINER").removeClass("d-none");
             clearInterval(loadingInterval);
+            setTimeout(function () {
+                $("#HIDE_ADS").removeClass("d-none");
+            }, 2000);
         } else {
             let loadingText = variations[variation];
 
@@ -27,6 +31,7 @@
                 variation = ++variation % variations.length;
 
                 if (variation === 0) {
+                    $("#AD_NATIVE_BANNER_CONTAINER").removeClass("d-none");
                     clearInterval(loadingInterval);
                     $loading.text('').append($image.removeClass("d-none"));
                 }
@@ -36,6 +41,8 @@
                 $loading.text(loadingText[counter++]);
             }
         }
+
+        $loading = $("#LOADING");
     }, 500);
 
 /* private functions */

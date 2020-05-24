@@ -25,9 +25,14 @@
             <a title="Reload" href="" onclick="() => window.location.reload(true)" class="d-none"><img style="height: 100px; width: 100px;" class="shadow rounded-circle" src="content/t-rex.png" /></a>
         </div>
     </app>
-	
-    <h6 class="mt-5 ml-2 mb-2">Ads (sorry!)</h6>
-    <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
+
+    <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none">
+        <div class="row no-gutters align-items-baseline">
+            <h6 class="mt-5 mx-2 mb-2">Ads</h6>
+            <button id="HIDE_ADS" class="btn btn-link d-none p-0" onclick="$('#AD_NATIVE_BANNER_CONTAINER').hide()">hide</button>
+        </div>
+        <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -42,7 +47,7 @@
     <script src="js/githubhack.js?v=0.2003.3"></script>
     <script src="js/siteloading.js?v=0.2003.3"></script>
     <script src="js/utility.js?v=0.2003.3"></script>
-    <script src="js/mainlayout.js?v=0.2003.3"></script>
+    <script src="js/mainlayout.js?v=0.2003.4"></script>
     
     <script src="_framework/blazor.webassembly.js?v=0.2003.3" type="text/javascript"></script>
 </body>

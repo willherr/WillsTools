@@ -16,8 +16,8 @@
     <!-- Custom CSS -->
     <link href="css/site.css?v=0.0523.0" rel="stylesheet" />
 
-    <!-- Google AdSense -->
-    <script data-ad-client="ca-pub-4705721813297906" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Adsterra - Don't run local... -->
+    <!--<script async="async" data-cfasync="false" src="//pl15503181.passtechusa.com/88bc8fa936bd3ad10660eb1a41aa96de/invoke.js"></script>-->
 </head>
 
 <body class="h-100 bg-light">
@@ -28,6 +28,14 @@
         </div>
     </app>
 
+    <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none">
+        <div class="row no-gutters align-items-baseline">
+            <h6 class="mt-5 mx-2 mb-2">Ads</h6>
+            <button id="HIDE_ADS" class="btn btn-link d-none p-0" onclick="$('#AD_NATIVE_BANNER_CONTAINER').hide()">hide</button>
+        </div>
+        <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
+    </div>
+
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
@@ -35,7 +43,6 @@
     </div>
 
     <!-- Third Party Scripts-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script> this replaces font awesome with svg -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
