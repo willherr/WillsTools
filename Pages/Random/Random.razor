@@ -21,22 +21,24 @@
 
     @if (ViewModel.Items.Any())
     {
-        <ol class="mb-4 list-unstyled ml-4 overflow-auto col-lg-6" style="max-height: 250px">
-            @foreach (var item in ViewModel.Items)
-            {
-                <li>
-                    <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
-                    @if (item.Popped)
-                    {
-                        <del class="text-secondary">@item.Name</del>
-                    }
-                    else
-                    {
-                        <span>@item.Name</span>
-                    }
-                </li>
-            }
-        </ol>
+<div class="col-lg-6">
+    <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 250px">
+        @foreach (var item in ViewModel.Items)
+        {
+            <li>
+                <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
+                @if (item.Popped)
+                {
+                    <del class="text-secondary">@item.Name</del>
+                }
+                else
+                {
+                    <span>@item.Name</span>
+                }
+            </li>
+        }
+    </ol>
+</div>
     }
 
     <div class="row no-gutters col col-lg-6 justify-content-between p-0">
