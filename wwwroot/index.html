@@ -2,26 +2,30 @@
 <html class="h-100">
 
 <head>
+    <!-- Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Will's Tools</title>
     <link rel="shortcut icon" type="image/png" href="favicon.ico" />
     <base href="/" />
-    <!--<base href="/WillsTools/" />-->
+        <!--<base href="/WillsTools/" />-->
+
+    <!-- Thrid Party CSS -->
     <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Custom CSS -->
     <link href="css/site.css?v=0.0523.0" rel="stylesheet" />
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script> this replaces font awesome with svg -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
+
+    <!-- Google AdSense -->
     <script data-ad-client="ca-pub-4705721813297906" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 
 <body class="h-100 bg-light">
     <app>
+        <noscript><a title="Reload" href="" onclick="() => window.location.reload(true)"><img style="display: block; height: 100px; width: 100px;" class="shadow rounded-circle" src="content/t-rex.png" /></a></noscript>
         <div id="LOADING">
-            You'll need javascript in order to use Will's Tools
+            <a title="Reload" href="" onclick="() => window.location.reload(true)" class="d-none"><img style="height: 100px; width: 100px;" class="shadow rounded-circle" src="content/t-rex.png" /></a>
         </div>
     </app>
 
@@ -31,10 +35,21 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="js/githubhack.js?v=0.2003.0"></script>
-    <script src="js/siteloading.js?v=0.2003.0"></script>
-    <script src="js/utility.js?v=0.2003.0"></script>
-    <script src="js/mainlayout.js?v=0.2003.0"></script>
-    <script src="_framework/blazor.webassembly.js?v=0.2003.0" type="text/javascript"></script>
+    <!-- Third Party Scripts-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script> this replaces font awesome with svg -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="js/githubhack.js?v=0.0523.0"></script>
+    <script src="js/siteloading.js?v=0.0523.0"></script>
+    <script src="js/utility.js?v=0.0523.0"></script>
+    <script src="js/mainlayout.js?v=0.0523.0"></script>
+
+    <!-- Framework Scripts -->
+    <!--
+        <script src="_framework/blazor.webassembly.js?v=0.2003.0" type="text/javascript"></script>
+    -->
 </body>
 </html>

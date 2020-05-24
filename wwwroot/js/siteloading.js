@@ -1,23 +1,45 @@
 ﻿(function () {
     "use strict";
-    $("#LOADING").text("Loading Will's Tools");
-    let loadingInterval = setInterval(function () {
-        const $loading = $("#LOADING");
-        if ($loading.length) {
-            $("#LOADING").text($("#LOADING").text() + ".");
-        } else {
-            clearInterval(loadingInterval);
-        }
-    }, 250);
 
-    setTimeout(function () {
-        const $loading = $("#LOADING");
-        if ($loading.length) {
+    /* constructor */
+    let variations = [
+        ["Loading", "Loading Will's", "Loading Will's Tools", "Loading", "Loading Will's", "Loading Will's Tools"],
+        ["Loading Will's Tools", "Loading Will's Tools.", "Loading Will's Tools..", "Loading Will's Tools...", "Loading Will's Tools", "Loading Will's Tools.", "Loading Will's Tools..", "Loading Will's Tools..."],
+        ["Loading Will's Tools", "Loading Will's", "Loading", "Loading Will's Tools", "Loading Will's", "Loading"],
+        ["Loading Will's Tools...", "Loading Will's Tools.", "Loading Will's Tools.", "Loading Will's Tools", "Loading Will's Tools", "Loading Will's Tools...", "Loading Will's Tools.", "Loading Will's Tools.", "Loading Will's Tools", "Loading Will's Tools"],
+        ["Is", "Is your", "Is your wifi", "Is your wifi down", "Is your wifi down?", "Is your wifi down?", "Is your wifi down?", "Is your wifi down??", "Is your wifi down???", "Is your wifi down????", "Is your wifi down?????"]
+    ];
+    const $image = $("app a");
+    const $loading = $("#LOADING").text('');
+    let counter = 0;
+    let variation = 0;
+
+    /* main */
+    let loadingInterval = setInterval(async function () {
+
+        if (!$loading.length) {
             clearInterval(loadingInterval);
-            $loading.text("This is taking too long. Ask Will why.");
-            if (/iPad|iPhone|iPod/.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-                $loading.parent().addClass("p-3").append("Note: IOS is not supported yet. I'm developing this site with pre-released Microsoft software called Blazor Web Assembly. The official release date is in May, so you may have to wait until then. I know, the anticipation is probably killing you.");
+        } else {
+            let loadingText = variations[variation];
+
+            if (counter === loadingText.length) {
+                counter = 0;
+                variation = ++variation % variations.length;
+
+                if (variation === 0) {
+                    clearInterval(loadingInterval);
+                    $loading.text('').append($image.removeClass("d-none"));
+                }
+            }
+            else {
+                // animate
+                $loading.text(loadingText[counter++]);
             }
         }
-    }, 10000)
-})()
+    }, 500);
+
+/* private functions */
+    function sleep(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+})();
