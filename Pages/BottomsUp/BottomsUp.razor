@@ -1,5 +1,6 @@
 ﻿@page "/bottoms-up"
 @inject IJSRuntime JSRuntime
+    <Title>Bottom's Up | Will's Tools</Title>
 
 @if (!initializing)
 {
@@ -21,7 +22,7 @@
 
 @code {
     private static Dictionary<char, char> flippedPunctuation = new Dictionary<char, char>
-    {
+{
         { '(', ')' },
         { ')', '(' },
         { '[', ']' },
@@ -39,7 +40,7 @@
         "This is what Bottom's Up demonstrates. Just because we are used to something a certain way, doesn't mean that there can't be other completely valid ways to do something.",
         "Also, I'm basically just coming up with stuff to say just to add content to this page because without the content, this page is totally confusing. So thank goodness for this content!",
         "I can't believe you are still reading this at this point... But props to you for getting this far. I'm not even sure how I got this far..."
-        };
+            };
 
     private string BottomsUpOutput { get; set; }
 

@@ -2,6 +2,8 @@
 @inject IJSRuntime JSRuntime
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
+    <Title>Counter | Will's Tools</Title>
+
 @if (!initializing)
 {
     <div class="row no-gutters justify-content-center">
@@ -76,7 +78,7 @@
         Layout.Reset();
         Layout.Title = "Counter";
         Layout.PageActions = new List<(string Name, Action Action)>
-        {
+    {
             ("Add Counter", AddCounter),
             ("Reset Counters", ResetCounters),
             ("Increment Counters", IncrementCounters),
@@ -93,7 +95,7 @@
             if ((CounterWidgets?.Count ?? 0) == 0)
             {
                 CounterWidgets = new List<CounterWidgetModel>
-                {
+            {
                     new CounterWidgetModel()
                 };
             }

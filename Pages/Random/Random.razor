@@ -1,6 +1,7 @@
 ﻿@page "/random"
 @inject HttpClient Http
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
+<Title>Random | Will's Tools</Title>
 
 <div class="mx-2">
     <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
@@ -21,24 +22,24 @@
 
     @if (ViewModel.Items.Any())
     {
-<div class="col-lg-6">
-    <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 225px">
-        @foreach (var item in ViewModel.Items)
-        {
-            <li>
-                <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
-                @if (item.Popped)
+        <div class="col-lg-6">
+            <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 225px">
+                @foreach (var item in ViewModel.Items)
                 {
-                    <del class="text-secondary">@item.Name</del>
+                    <li>
+                        <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
+                        @if (item.Popped)
+                        {
+                            <del class="text-secondary">@item.Name</del>
+                        }
+                        else
+                        {
+                            <span>@item.Name</span>
+                        }
+                    </li>
                 }
-                else
-                {
-                    <span>@item.Name</span>
-                }
-            </li>
-        }
-    </ol>
-</div>
+            </ol>
+        </div>
     }
 
     <div class="row no-gutters col col-lg-6 justify-content-between p-0">
