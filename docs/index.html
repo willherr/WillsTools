@@ -2,37 +2,42 @@
 <html class="h-100">
 
 <head>
+    <!-- Google SEO -->
     <meta name="google-site-verification" content="KwurvVlB9_Gx6dTKgGnFS5mS87mlMnZz7mmxmrr1ELg" />
+    <title>Will's Tools</title>
+    <meta name="description" content="A bunch of useful (and useless) tools! Random generator, counter, and other custom tools.">
 
+    <!-- Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="shortcut icon" type="image/png" href="favicon.ico" />
-    <title>Will's Tools</title>
+    <!-- <base href="/" /> -->
     <base href="/WillsTools/" />
-	
+    <!-- Thrid Party CSS -->
     <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
-    
-    <link href="css/site.css?v=0.0523.3" rel="stylesheet" />   
-	
-    <!-- Ads -->
+
+    <!-- Custom CSS -->
+    <link href="css/site.css?v=0.0523.0" rel="stylesheet" />
+
+    <!-- Analytics and Ads -->
 </head>
 
 <body class="h-100 bg-light">
     <app>
-        <noscript><a title="Reload" href="" onclick="() => window.location.reload(true)"><img style="display: block; height: 100px; width: 100px;" class="shadow rounded-circle" src="content/t-rex.png" /></a></noscript>
+        <noscript><a title="Reload" href="" onclick="() => window.location.reload(true)"><img style="display: block; height: 100px; width: 100px;" alt="Failed to load" class="shadow rounded-circle" src="content/t-rex.png" /></a></noscript>
         <div id="LOADING">
-            <a title="Reload" href="" onclick="() => window.location.reload(true)" class="d-none"><img style="height: 100px; width: 100px;" class="shadow rounded-circle" src="content/t-rex.png" /></a>
+            <a title="Reload" href="" onclick="() => window.location.reload(true)" class="d-none"><img style="height: 100px; width: 100px;" alt="Failed to load" class="shadow rounded-circle" src="content/t-rex.png" /></a>
         </div>
     </app>
 
-    <!-- <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none"> -->
-        <!-- <div class="row no-gutters align-items-baseline"> -->
-            <!-- <h6 class="mt-5 mx-2 mb-2">Ads</h6> -->
-            <!-- <button id="HIDE_ADS" class="btn btn-link d-none p-0" onclick="$('#AD_NATIVE_BANNER_CONTAINER').hide()">hide</button> -->
-        <!-- </div> -->
-		<!-- <div id="amzn-assoc-ad-b079048d-8028-4edb-8869-788fc05a6c36"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=b079048d-8028-4edb-8869-788fc05a6c36"></script> -->
-    <!-- </div> -->
+    <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none">
+        <div class="row no-gutters align-items-baseline">
+            <h6 class="mt-5 mx-2 mb-2">Ads</h6>
+            <button id="HIDE_ADS" class="btn btn-link d-none p-0" onclick="$('#AD_NATIVE_BANNER_CONTAINER').hide()">hide</button>
+        </div>
+        <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -40,15 +45,24 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <!-- Robot links -->
+    <a href="/bottoms-up" class="d-none">Bottom's Up</a>
+    <a href="/counter" class="d-none">Counter</a>
+    <a href="/privacy" class="d-none">Privacy Policy</a>
+    <a href="/random" class="d-none">Random</a>
+
+    <!-- Third Party Scripts-->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
-	
-    <script src="js/githubhack.js?v=0.2003.3"></script>
-    <script src="js/siteloading.js?v=0.2003.5"></script>
-    <script src="js/utility.js?v=0.2003.3"></script>
-    <script src="js/mainlayout.js?v=0.2003.5"></script>
-    
-    <script src="_framework/blazor.webassembly.js?v=0.2003.3" type="text/javascript"></script>
+
+    <!-- Custom Scripts -->
+    <script src="js/githubhack.js?v=0.0523.0"></script>
+    <script src="js/siteloading.js?v=0.0523.0"></script>
+    <script src="js/utility.js?v=0.0523.0"></script>
+    <script src="js/mainlayout.js?v=0.0523.0"></script>
+
+    <!-- Framework Scripts -->
+    <script src="_framework/blazor.webassembly.js?v=0.2003.0" type="text/javascript"></script>
 </body>
 </html>
