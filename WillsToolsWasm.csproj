@@ -24,7 +24,7 @@
 
   <Target Name="CustomTarget" AfterTargets="AfterPublish">
     <Warning Text="Moving ^*.html to /docs" />
-    <Exec Command="robocopy $(PublishDir)wwwroot docs *.* /E /XD docs /move /XF *.html"></Exec>
+    <Exec Command="robocopy $(PublishDir)wwwroot docs *.* /E /XD docs /move /XF *.html" ContinueOnError="WarnAndContinue"></Exec>
   </Target>
 
 </Project>
