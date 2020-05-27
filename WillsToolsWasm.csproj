@@ -22,9 +22,14 @@
     <PackageReference Include="Toolbelt.Blazor.HeadElement" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DevOps\" />
+  </ItemGroup>
+
   <Target Name="CustomTarget" AfterTargets="AfterPublish">
     <Warning Text="Moving ^*.html to /docs" />
-    <Exec Command="robocopy $(PublishDir)wwwroot docs *.* /E /XD docs /move /XF *.html" ContinueOnError="WarnAndContinue"></Exec>
+    <Exec Command="%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -NonInteractive -executionpolicy Unrestricted -command &quot;&amp; { &amp;&apos;$(MSBuildProjectDirectory)\DevOps\publish.ps1&apos; &apos;$(MSBuildProjectDirectory)\$(PublishDir)&apos; &apos;$(MSBuildProjectDirectory)&apos;} &quot;"></Exec> 
+    <!--<Exec Command="$(PowerShellExe) .\DevOps\publish.ps1 $(PublishDir)" ContinueOnError="WarnAndContinue"></Exec>-->
   </Target>
 
 </Project>
