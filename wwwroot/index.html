@@ -1,15 +1,18 @@
 ﻿<!DOCTYPE html>
 <html class="h-100">
 
-<!-- On publish -- Any line containing "#DEL" will be removed, including this one! Also all versions will be updated (querystring "?v=") -->
+<!--#DEL
+    #DEL On publish:
+    #DEL    Any line containing "#DEL" will be removed, including this one!
+    #DEL    Also all hosted files will be cache-busted (querystring "?v=" is assigned a GUID)
+#DEL-->
 
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- #DEL -- Any line with the string "#DEL" will be remove on publish
+    <!--#DEL
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167596911-1"></script>
         <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config', 'UA-167596911-1');</script>
-    #DEL -->
-
+    #DEL-->
     <!-- Google SEO -->
     <meta name="google-site-verification" content="KwurvVlB9_Gx6dTKgGnFS5mS87mlMnZz7mmxmrr1ELg" />
     <title>Will's Tools</title>
@@ -19,18 +22,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" type="image/png" href="favicon.ico" />
-    <!--
+
+    <!--  This is for development
     #DEL-->
     <base href="/" />
     <!--#DEL
     -->
     <!--#DEL This is your repo's name.
-        <base href="/WillsTools/" />
+    <base href="/WillsTools/" />
     #DEL-->
-
-    <!-- Thrid Party CSS -->
+    <!-- Third Party CSS -->
     <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+    <script src="_content/MatBlazor/dist/matBlazor.js"></script>
+    <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
     <link href="css/site.css?v=" rel="stylesheet" />
@@ -44,6 +49,7 @@
         </div>
     </app>
 
+    <!--#DEL
     <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none" style="display:none;">
         <div class="row no-gutters align-items-baseline">
             <h6 class="mt-5 mx-2 mb-2">Ads</h6>
@@ -51,6 +57,7 @@
         </div>
         <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
     </div>
+    #DEL-->
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
