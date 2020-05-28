@@ -11,5 +11,8 @@ window.Utility = {
     },
     removeClass: function (targetSelector, cssClass) {
         $(targetSelector).removeClass(cssClass);
+    },
+    copyText: function (text) {
+        return navigator.clipboard.writeText(text).catch(_ => false);
     }
 };

@@ -37,6 +37,26 @@ namespace WillsToolsWasm.Pages.Random
                         InputRangeEnd = null;
                     }
                     break;
+                case InputType.Scramble:
+                    if (!string.IsNullOrEmpty(Input))
+                    {
+                        var input = new List<char>(Input);
+                        var n = input.Count;
+                        while (n > 1)
+                        {
+                            n--;
+                            var k = Random.Next(n + 1);
+                            var value = input[k];
+                            input[k] = input[n];
+                            input[n] = value;
+                        }
+                        RandomItem = string.Join("", input);
+                    }
+                    else
+                    {
+                        RandomItem = "Enter something to scramble!";
+                    }
+                    break;
             }
         }
 
@@ -353,5 +373,6 @@ public class RandomItem
 public enum InputType
 {
     OneAtATime = 0,
-    Range = 1
+    Range = 1,
+    Scramble = 2
 };
