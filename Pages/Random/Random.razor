@@ -19,10 +19,18 @@
                 <InputText class="col col-lg-3 mx-2 pl-1" placeholder="End" @bind-Value="ViewModel.InputRangeEnd"></InputText>
                 break;
         }
-        <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+
+        @if (InputType.Word == ViewModel.InputType)
+        {
+            <button class="btn btn-primary col col-lg-6" @onclick="RandomWord">Random Word!</button>
+        }
+        else
+        {
+            <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+        }
     </EditForm>
 
-    @if (ViewModel.Items.Any() && ViewModel.InputType != InputType.Scramble)
+    @if (ViewModel.Items.Any() && new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
     {
         <div class="col-lg-6">
             <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 225px">
@@ -44,7 +52,7 @@
         </div>
     }
 
-    @if (ViewModel.InputType != InputType.Scramble)
+    @if (new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
     {
         <div class="row no-gutters col col-lg-6 justify-content-between p-0">
             <div class="row no-gutters">
@@ -74,29 +82,34 @@
     public RandomViewModel ViewModel { get; set; }
     [CascadingParameter] MainLayout Layout { get; set; }
 
+    private Task RandomWord()
+    {
+        var source = new System.Threading.CancellationTokenSource();
+        ViewModel.RandomItem = ".";
+
+        Task.Run(() =>
+        {
+            while (true)
+            {
+                ViewModel.RandomItem += ".";
+                StateHasChanged();
+                Task.Delay(100).Wait();
+            }
+        }, source.Token);
+
+        return GetRandomWord().ContinueWith(word =>
+        {
+            source.Cancel();
+            ViewModel.RandomItem = word.Result;
+            StateHasChanged();
+        });
+    }
+
     private async Task CopyResult()
     {
         await JSRuntime.InvokeVoidAsync("Utility.copyText", ViewModel.RandomItem);
         message = "Copied to clipboard.";
         _ = Task.Delay(5000).ContinueWith(_ => message = null).ContinueWith(_ => StateHasChanged());
-    }
-
-    private void InitOneAtATime()
-    {
-        Layout.SubTitle = "One-at-a-time";
-        ViewModel.InputType = InputType.OneAtATime;
-    }
-
-    private void InitRange()
-    {
-        Layout.SubTitle = "Range";
-        ViewModel.InputType = InputType.Range;
-    }
-
-    private void InitScramble()
-    {
-        Layout.SubTitle = "Scramble";
-        ViewModel.InputType = InputType.Scramble;
     }
 
     protected override void OnInitialized()
@@ -110,7 +123,7 @@
             ViewModel = new RandomViewModel
             {
                 Items = new List<RandomItem>
-{
+                {
                     new RandomItem("Stars"),
                     new RandomItem("Diamonds"),
                     new RandomItem("Hearts"),
@@ -130,14 +143,38 @@
         Layout.Reset();
         Layout.Title = "Random";
         Layout.PageActions = new List<(string Name, Action Action)>
-{
+        {
             ("One-at-a-time", InitOneAtATime),
             ("Range", InitRange),
-            ("Scramble", InitScramble)
+            ("Scramble", InitScramble),
+            ("Word", InitWord)
         };
 
         Layout.PageActions[(int)ViewModel.InputType].Action();
-        Debug.WriteLine(ViewModel.InputType);
+
+        void InitOneAtATime()
+        {
+            Layout.SubTitle = "One-at-a-time";
+            ViewModel.InputType = InputType.OneAtATime;
+        }
+
+        void InitRange()
+        {
+            Layout.SubTitle = "Range";
+            ViewModel.InputType = InputType.Range;
+        }
+
+        void InitScramble()
+        {
+            Layout.SubTitle = "Scramble";
+            ViewModel.InputType = InputType.Scramble;
+        }
+
+        void InitWord()
+        {
+            Layout.SubTitle = "Word";
+            ViewModel.InputType = InputType.Word;
+        }
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -151,10 +188,9 @@
         }
     }
 
-    private async Task<string>
-    GetRandomWord()
+    private Task<string> GetRandomWord()
     {
-        return (await Http.GetFromJsonAsync<string[]>
-            ("https://random-word-api.herokuapp.com/word"))[0];
+        return Http.GetFromJsonAsync<string[]>("https://random-word-api.herokuapp.com/word")
+            .ContinueWith(json => json.Result[0]);
     }
 }

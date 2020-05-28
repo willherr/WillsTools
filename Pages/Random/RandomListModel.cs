@@ -374,5 +374,6 @@ public enum InputType
 {
     OneAtATime = 0,
     Range = 1,
-    Scramble = 2
+    Scramble = 2,
+    Word = 3
 };
