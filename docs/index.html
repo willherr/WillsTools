@@ -29,7 +29,7 @@
     <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link href="css/site.css?v=84f4854e-6c2c-4654-98d8-892d4f00fd26" rel="stylesheet" />
+    <link href="css/site.css?v=e81663ae-a442-416e-b918-29fa51da33e5" rel="stylesheet" />
 </head>
 
 <body class="h-100 bg-light">
@@ -66,13 +66,17 @@
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
 
     <!-- Custom Scripts -->
-    <script src="js/githubhack.js?v=84f4854e-6c2c-4654-98d8-892d4f00fd26"></script>
-    <script src="js/siteloading.js?v=84f4854e-6c2c-4654-98d8-892d4f00fd26"></script>
-    <script src="js/utility.js?v=84f4854e-6c2c-4654-98d8-892d4f00fd26"></script>
-    <script src="js/mainlayout.js?v=84f4854e-6c2c-4654-98d8-892d4f00fd26"></script>
+    <script src="js/githubhack.js?v=e81663ae-a442-416e-b918-29fa51da33e5"></script>
+    <script src="js/siteloading.js?v=e81663ae-a442-416e-b918-29fa51da33e5"></script>
+    <script src="js/utility.js?v=e81663ae-a442-416e-b918-29fa51da33e5"></script>
+    <script src="js/mainlayout.js?v=e81663ae-a442-416e-b918-29fa51da33e5"></script>
 
     <!-- Framework Scripts -->
-    <script src="_framework/blazor.webassembly.js?v=84f4854e-6c2c-4654-98d8-892d4f00fd26" type="text/javascript"></script>
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="_framework/blazor.webassembly.js?v=e81663ae-a442-416e-b918-29fa51da33e5" type="text/javascript"></script>
+    <script>
+        navigator.serviceWorker.register(
+            'service-worker.publish.js'
+        );
+    </script>
 </body>
 </html>
