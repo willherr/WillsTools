@@ -1,6 +1,6 @@
 {
   "name": "Will's Tools",
-  "short_name": "Tools",
+  //"short_name": "Tools",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

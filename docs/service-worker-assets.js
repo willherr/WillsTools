@@ -57,7 +57,7 @@
       "url": "js\/utility.js"
     },
     {
-      "hash": "sha256-wTQUP\/5vK6oimMNGXC77Zp9mUNEkMZWQTr1UZKZze3w=",
+      "hash": "sha256-AoOiIw0rkpwV+htdE4x5QsqwziSnX5k8PWHwslu3pQY=",
       "url": "manifest.json"
     },
     {
