@@ -27,9 +27,8 @@
   </ItemGroup>
 
   <Target Name="CustomTarget" AfterTargets="AfterPublish">
-    <Warning Text="Moving ^*.html to /docs" />
+    <Warning Text="Executing custom Github DevOps" />
     <Exec Command="%WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -NonInteractive -executionpolicy Unrestricted -command &quot;&amp; { &amp;'$(MSBuildProjectDirectory)\DevOps\publish.ps1' '$(MSBuildProjectDirectory)\$(PublishDir)' '$(MSBuildProjectDirectory)'} &quot;"></Exec> 
-    <!--<Exec Command="$(PowerShellExe) .\DevOps\publish.ps1 $(PublishDir)" ContinueOnError="WarnAndContinue"></Exec>-->
   </Target>
 
 </Project>
