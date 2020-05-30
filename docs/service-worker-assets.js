@@ -37,7 +37,7 @@
       "url": "favicon.png"
     },
     {
-      "hash": "sha256-+q8EO9\/4v1wF6mRgonhfGF9\/XeUNn8ahB82fuS2\/4+k=",
+      "hash": "sha256-YjiiKoF9vood0vtUoeNGN6255l\/nLO4fExqHK0I23HU=",
       "url": "index.html"
     },
     {
