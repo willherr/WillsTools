@@ -10,105 +10,8 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-a, .btn-link {
-    color: #0366d6;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
 .close {
     font-size: inherit;
-}
-
-app {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.top-row {
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-}
-
-.main {
-    flex: 1;
-}
-
-    .main .top-row {
-        background-color: #f7f7f7;
-        border-bottom: 1px solid #d6d5d5;
-        justify-content: flex-end;
-    }
-
-        .main .top-row > a, .main .top-row .btn-link {
-            white-space: nowrap;
-            margin-left: 1.5rem;
-        }
-
-        .main .top-row a:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-.page-navbar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-    .page-navbar .top-row {
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .page-navbar .navbar-brand {
-        font-size: 1.1rem;
-    }
-
-    .page-navbar .oi {
-        width: 2rem;
-        font-size: 1.1rem;
-        vertical-align: text-top;
-        top: -2px;
-    }
-
-    .page-navbar .nav-item {
-        font-size: 0.9rem;
-        padding-bottom: 0.5rem;
-    }
-
-        .page-navbar .nav-item:first-of-type {
-            padding-top: 1rem;
-        }
-
-        .page-navbar .nav-item:last-of-type {
-            padding-bottom: 1rem;
-        }
-
-        .page-navbar .nav-item a {
-            color: #d7d7d7;
-            border-radius: 4px;
-            height: 3rem;
-            display: flex;
-            align-items: center;
-            line-height: 3rem;
-        }
-
-            .page-navbar .nav-item a.active {
-                background-color: rgba(255,255,255,0.25);
-                color: white;
-            }
-
-            .page-navbar .nav-item a:hover {
-                background-color: rgba(255,255,255,0.1);
-                color: white;
-            }
-
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -178,49 +81,23 @@ app {
         top: 0.5rem;
     }
 
-.main .top-row:not(.auth) {
-    display: none;
-}
-
-.main .top-row.auth {
-    justify-content: space-between;
-}
-
-.main .top-row a, .main .top-row .btn-link {
-    margin-left: 0;
-}
-
 @media (min-width: 576px) {
     .w-sm-auto {
         width: auto !important;
     }
-
 }
 
 @media (min-width: 768px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .page-navbar .collapse {
-        display: block;
-    }
-
-    .page-navbar .nav {
-        flex-direction: row !important;
-    }
-
     .w-md-auto {
         width: auto !important;
     }
-
     .w-md-75 {
         width: 75% !important;
     }
 }
 
 @media (min-width: 992px) {
-    .w-ls-auto {
+    .w-lg-auto {
         width: auto !important;
     }
 }

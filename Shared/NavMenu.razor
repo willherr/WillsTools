@@ -1,69 +1,37 @@
 ﻿@inject NavigationManager NavigationManager
 
-<div class="page-navbar">
-    <div class="top-row pl-4 navbar navbar-dark">
-        <a class="navbar-brand" href=""><i class="fas fa-tools fa-lg mr-4"></i>Will's Tools</a>
-        <button class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-
-    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-        <ul class="nav flex-column">
-            @if (NavigationManager.Uri.Contains("localhost"))
-            {
-                <li class="nav-item py-0">
-                    <NavLink class="nav-link rounded-0" href="test-code">
-                        <span class="fas fa-vial mr-2 font-size-large" aria-hidden="true"></span> Test Code
-                    </NavLink>
-                </li>
-            }
-            <li class="nav-item py-0">
-                <NavLink class="nav-link rounded-0" href="counter">
-                    <span class="fas fa-minus mr-2" aria-hidden="true"></span> Counter <span class="fas fa-plus ml-2" aria-hidden="true"></span>
-                </NavLink>
-            </li>
-            <li class="nav-item py-0">
-                <NavLink class="nav-link rounded-0" href="random">
-                    <span class="fas fa-dice-@randomDieNumber mr-2 font-size-large" aria-hidden="true"></span> Random
-                </NavLink>
-            </li>
-            <li class="nav-item py-0">
-                <NavLink class="nav-link rounded-0" href="bottoms-up">
-                    <span class="fas fa-long-arrow-alt-up mr-1 font-size-large" aria-hidden="true"></span> Bottom's Up
-                </NavLink>
-            </li>
-            <li class="nav-item py-0 ml-md-auto">
-                <NavLink class="nav-link rounded-0" href="privacy">
-                    <span class="fas fa-user-secret mr-2 font-size-large" aria-hidden="true"></span> Privacy Policy
-                </NavLink>
-            </li>
-        </ul>
-    </div>
-</div>
+    <MatNavMenu>
+        <MatNavItem Href="test-code">
+            Test Code <MatIcon Class="ml-auto"><i class="fas fa-vial" aria-hidden="true"></i></MatIcon>
+        </MatNavItem>
+        <MatDivider></MatDivider>
+        <MatNavItem Href="counter">
+            Counter <MatIcon Class="ml-auto mr-1"><i class="fas fa-minus" aria-hidden="true"></i></MatIcon><MatIcon><i class="fas fa-plus"></i></MatIcon>
+        </MatNavItem>
+        <MatDivider></MatDivider>
+        <MatNavItem Href="random">
+            Random <MatIcon Class="ml-auto"><i class="@randomDieNumber" aria-hidden="true"></i></MatIcon>
+        </MatNavItem>
+        <MatDivider></MatDivider>
+        <MatNavItem Href="bottoms-up">
+            Bottom's Up <MatIcon Class="ml-auto"><i class="fas fa-long-arrow-alt-up"></i></MatIcon>
+        </MatNavItem>
+    </MatNavMenu>
 
 @code {
-    private bool collapseNavMenu = true;
     private string randomDieNumber
     {
         get
         {
             switch (new Random().Next(6) + 1)
             {
-                case 1: return "one";
-                case 2: return "two";
-                case 3: return "three";
-                case 4: return "four";
-                case 5: return "five";
-                default: return "six";
+                case 1: return "fas fa-dice-one";
+                case 2: return "fas fa-dice-two";
+                case 3: return "fas fa-dice-three";
+                case 4: return "fas fa-dice-four";
+                case 5: return "fas fa-dice-five";
+                default: return "fas fa-dice-six";
             }
         }
-    }
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
     }
 }

@@ -1,16 +1,14 @@
 ﻿"use strict";
 window.Utility = {
-    // utility functions
     scrollToBottom: function () {
         window.scrollTo(0, document.body.scrollHeight);
     },
-
-    // jquery wrappers
     addClass: function (targetSelector, cssClass) {
-        $(targetSelector).addClass(cssClass);
+        document.querySelectorAll(targetSelector).forEach(node => node.classList.add(cssClass));
+        document.querySelectorAll(targetSelector).forEach(node => node.classList.add(cssClass));
     },
     removeClass: function (targetSelector, cssClass) {
-        $(targetSelector).removeClass(cssClass);
+        document.querySelectorAll(targetSelector).forEach(node => node.classList.remove(cssClass));
     },
     copyText: function (text) {
         return navigator.clipboard.writeText(text).catch(_ => false);

@@ -2,63 +2,48 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 
-<NavMenu />
+<Title>@(string.IsNullOrEmpty(Title) ? null : $"{Title} | ")Will's Tools</Title>
 
-<div class="main bg-light">
-    <div class="card rounded-0">
-        <div class="card-header bg-white @PageNavbarClass">
+<MatAppBarContainer Class="h-100">
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+            <MatAppBarSection>
+                <MatIconButton Icon="menu" OnClick="() => opened = !opened"></MatIconButton>
+                <MatAppBarTitle>Will's Tools @(string.IsNullOrEmpty(Title) ? null : $"- {Title}")</MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <MatIconButton Icon="favorite"></MatIconButton>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
 
-            <div class="d-inline-block">
-                <h6 class="card-title mb-0 font-weight-bold d-inline-block d-md-none @(string.IsNullOrEmpty(Title) ? "d-none" : "")">
-                    @Title
-                </h6>
-                @if (!string.IsNullOrEmpty(SubTitle))
-                {
-                    <h6 class="d-inline-block mb-0">
-                        <span class="d-inline-block d-md-none">-</span>
-                        @SubTitle
-                    </h6>
-                }
-            </div>
+    <MatAppBarContent>
+        <MatDrawerContainer Class="h-100">
+            <MatHidden Breakpoint="@MatBreakpoint.MD" Direction="@MatHiddenDirection.Up">
+                <ChildContent>
+                    <MatDrawer @bind-Opened="@opened" Mode="@MatDrawerMode.Modal">
+                        <NavMenu />
+                    </MatDrawer>
+                </ChildContent>
 
-            <div class="dropdown btn-group float-right @(pageActions.Any() ? "" : "d-none")">
-                <button id="PageActions" type="button" class="btn btn-secondary rounded py-0 px-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data->
-                    <span class="fas fa-cog"></span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    @foreach (var pageAction in pageActions)
-                    {
-                        <button class="dropdown-item" @onclick="() => pageAction.Action()">@pageAction.Name</button>
-                    }
-                </div>
-            </div>
-        </div>
+                <ElseContent>
+                    <MatDrawer Class="mat-elevation-z4" @bind-Opened="@opened" Mode="@MatDrawerMode.Dismissible">
+                        <NavMenu />
+                    </MatDrawer>
+                </ElseContent>
+            </MatHidden>
 
-        <div class="card-body px-0 px-sm-2">
-            <CascadingValue Value="this">
-                @Body
-            </CascadingValue>
-        </div>
-    </div>
-</div>
+            <MatDrawerContent>
+                <CascadingValue Value="this">
+                    @Body
+                </CascadingValue>
+            </MatDrawerContent>
+        </MatDrawerContainer>
+    </MatAppBarContent>
+</MatAppBarContainer>
 
 @code{
-    private string PageNavbarClass
-    {
-        get
-        {
-            if (PageActions.Any())
-            {
-                return string.Empty;
-            }
-            else if (!string.IsNullOrEmpty(Title))
-            {
-                return "d-md-none";
-            }
-
-            return "d-none";
-        }
-    }
+    private bool opened = true;
 
     private string title;
     public string Title
@@ -105,7 +90,7 @@
     {
         if (firstRender)
         {
-            await JSRuntime.InvokeVoidAsync("MainLayout.initialize");
+            //await JSRuntime.InvokeVoidAsync("MainLayout.initialize");
         }
         if (Title != "Bottom's Up")
         {
