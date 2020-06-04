@@ -9,11 +9,7 @@
         <MatAppBar Class="mat-elevation-z4" Fixed="true">
             <MatAppBarRow>
                 <MatAppBarSection>
-                    <MatHidden Breakpoint="MatBreakpoint.MD" Direction="MatHiddenDirection.Up">
-                        <ChildContent>
-                            <MatIconButton Class="d-flex" Icon="menu" OnClick="() => OpenedDrawer = !OpenedDrawer"></MatIconButton>
-                        </ChildContent>
-                    </MatHidden>
+                    <MatIconButton Class="d-flex" Icon="menu" OnClick="ClickSidebarButton"></MatIconButton>
                     <MatAppBarTitle>
                         <i class="fas fa-tools fa-lg mr-1"></i>
                         @if (string.IsNullOrEmpty(Title))
@@ -53,13 +49,13 @@
                     </ChildContent>
 
                     <ElseContent>
-                        <MatDrawer Class="mat-elevation-z4" Opened="true">
+                        <MatDrawer Class="mat-elevation-z4" Opened="@OpenedLargeDrawer">
                             <NavMenu />
                         </MatDrawer>
                     </ElseContent>
                 </MatHidden>
 
-                <MatDrawerContent Class="py-4">
+                <MatDrawerContent>
                     @Body
                 </MatDrawerContent>
             </MatDrawerContainer>
@@ -75,6 +71,17 @@
         set
         {
             openedDrawer = value;
+            StateHasChanged();
+        }
+    }
+
+    private bool openedLargeDrawer = true;
+    public bool OpenedLargeDrawer
+    {
+        get => openedLargeDrawer;
+        set
+        {
+            openedLargeDrawer = value;
             StateHasChanged();
         }
     }
@@ -131,5 +138,11 @@
         {
             await JSRuntime.InvokeVoidAsync("Utility.removeClass", "app", "flex-column-reverse");
         }
+    }
+
+    private void ClickSidebarButton()
+    {
+        OpenedLargeDrawer = !OpenedLargeDrawer;
+        OpenedDrawer = !OpenedDrawer;
     }
 }

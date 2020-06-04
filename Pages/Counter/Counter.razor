@@ -2,19 +2,33 @@
 @inject IJSRuntime JSRuntime
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
-@if (!initializing)
-{
-    <div class="row no-gutters justify-content-center">
-        @if (CounterWidgets.Count == 0)
+<MatAppBarContainer Class="h-100">
+    <MatThemeProvider Theme="new MatTheme { Primary = MatThemeColors.Grey._400.Value }">
+        <MatAppBar Class="mat-elevation-z4">
+            <MatAppBarRow>
+                <MatAppBarSection>
+
+                </MatAppBarSection>
+            </MatAppBarRow>
+        </MatAppBar>
+    </MatThemeProvider>
+    <MatAppBarContent>
+        @if (!initializing)
         {
-            <span class="text-info text-center">Click the options button to add some counters!</span>
+            <div class="row no-gutters justify-content-center">
+                @if (CounterWidgets.Count == 0)
+                {
+                    <span class="text-info text-center">Click the options button to add some counters!</span>
+                }
+                @foreach (var counterWidget in CounterWidgets)
+                {
+                    <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
+                }
+            </div>
         }
-        @foreach (var counterWidget in CounterWidgets)
-        {
-            <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
-        }
-    </div>
-}
+    </MatAppBarContent>
+</MatAppBarContainer>
+
 
 @code {
     private bool initializing = true;
@@ -76,7 +90,7 @@
         Layout.Reset();
         Layout.Title = "Counter";
         Layout.PageActions = new List<(string Name, Action Action)>
-    {
+                {
             ("Add Counter", AddCounter),
             ("Reset Counters", ResetCounters),
             ("Increment Counters", IncrementCounters),
@@ -93,7 +107,7 @@
             if ((CounterWidgets?.Count ?? 0) == 0)
             {
                 CounterWidgets = new List<CounterWidgetModel>
-            {
+                        {
                     new CounterWidgetModel()
                 };
             }
