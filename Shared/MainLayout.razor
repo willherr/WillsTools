@@ -4,46 +4,80 @@
 
 <Title>@(string.IsNullOrEmpty(Title) ? null : $"{Title} | ")Will's Tools</Title>
 
-<MatAppBarContainer Class="h-100">
-    <MatAppBar Fixed="true">
-        <MatAppBarRow>
-            <MatAppBarSection>
-                <MatIconButton Icon="menu" OnClick="() => opened = !opened"></MatIconButton>
-                <MatAppBarTitle>Will's Tools @(string.IsNullOrEmpty(Title) ? null : $"- {Title}")</MatAppBarTitle>
-            </MatAppBarSection>
-            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatIconButton Icon="favorite"></MatIconButton>
-            </MatAppBarSection>
-        </MatAppBarRow>
-    </MatAppBar>
+<CascadingValue Value="this">
+    <MatAppBarContainer Class="h-100">
+        <MatAppBar Class="mat-elevation-z4" Fixed="true">
+            <MatAppBarRow>
+                <MatAppBarSection>
+                    <MatHidden Breakpoint="MatBreakpoint.MD" Direction="MatHiddenDirection.Up">
+                        <ChildContent>
+                            <MatIconButton Class="d-flex" Icon="menu" OnClick="() => OpenedDrawer = !OpenedDrawer"></MatIconButton>
+                        </ChildContent>
+                    </MatHidden>
+                    <MatAppBarTitle>
+                        <i class="fas fa-tools fa-lg mr-1"></i>
+                        @if (string.IsNullOrEmpty(Title))
+                        {
+                            <text>Will's Tools</text>
+                        }
+                        else
+                        {
+                            <MatHidden Breakpoint="MatBreakpoint.MD" Direction="MatHiddenDirection.Up">
+                                <ChildContent>
+                                    @Title
+                                </ChildContent>
+                                <ElseContent>
+                                    Will's Tools
+                                </ElseContent>
+                            </MatHidden>
+                        }
+                    </MatAppBarTitle>
+                </MatAppBarSection>
+                <MatAppBarSection Align="MatAppBarSectionAlign.End">
+                    <MatTooltip Tooltip="Will's source code." Wrap="true" Position="MatTooltipPosition.Left">
+                        <MatIconButton Class="d-flex" Link="https://github.com/willherr/WillsTools" Target="_blank">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </MatIconButton>
+                    </MatTooltip>
+                </MatAppBarSection>
+            </MatAppBarRow>
+        </MatAppBar>
 
-    <MatAppBarContent>
-        <MatDrawerContainer Class="h-100">
-            <MatHidden Breakpoint="@MatBreakpoint.MD" Direction="@MatHiddenDirection.Up">
-                <ChildContent>
-                    <MatDrawer @bind-Opened="@opened" Mode="@MatDrawerMode.Modal">
-                        <NavMenu />
-                    </MatDrawer>
-                </ChildContent>
+        <MatAppBarContent>
+            <MatDrawerContainer Class="h-100">
+                <MatHidden Breakpoint="@MatBreakpoint.MD" Direction="@MatHiddenDirection.Up">
+                    <ChildContent>
+                        <MatDrawer @bind-Opened="@OpenedDrawer" Mode="@MatDrawerMode.Modal">
+                            <NavMenu />
+                        </MatDrawer>
+                    </ChildContent>
 
-                <ElseContent>
-                    <MatDrawer Class="mat-elevation-z4" @bind-Opened="@opened" Mode="@MatDrawerMode.Dismissible">
-                        <NavMenu />
-                    </MatDrawer>
-                </ElseContent>
-            </MatHidden>
+                    <ElseContent>
+                        <MatDrawer Class="mat-elevation-z4" Opened="true">
+                            <NavMenu />
+                        </MatDrawer>
+                    </ElseContent>
+                </MatHidden>
 
-            <MatDrawerContent>
-                <CascadingValue Value="this">
+                <MatDrawerContent Class="py-4">
                     @Body
-                </CascadingValue>
-            </MatDrawerContent>
-        </MatDrawerContainer>
-    </MatAppBarContent>
-</MatAppBarContainer>
+                </MatDrawerContent>
+            </MatDrawerContainer>
+        </MatAppBarContent>
+    </MatAppBarContainer>
+</CascadingValue>
 
 @code{
-    private bool opened = true;
+    private bool openedDrawer = false;
+    public bool OpenedDrawer
+    {
+        get => openedDrawer;
+        set
+        {
+            openedDrawer = value;
+            StateHasChanged();
+        }
+    }
 
     private string title;
     public string Title
@@ -80,6 +114,7 @@
 
     public void Reset()
     {
+        openedDrawer = false;
         subTitle = null;
         title = null;
         pageActions = new List<(string Name, Action Action)>();

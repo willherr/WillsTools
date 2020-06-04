@@ -1,20 +1,28 @@
 ﻿@inject NavigationManager NavigationManager
 
     <MatNavMenu>
-        <MatNavItem Href="test-code">
+        <MatNavItem Href="/" Class="m-0 rounded-0" NavLinkMatch="NavLinkMatch.All">
+            Home <MatIcon Class="ml-auto"><i class="fas fa-home" aria-hidden="true"></i></MatIcon>
+        </MatNavItem>
+        <MatDivider Class="m-0"></MatDivider>
+        <MatNavItem Href="test-code" Class="m-0 rounded-0">
             Test Code <MatIcon Class="ml-auto"><i class="fas fa-vial" aria-hidden="true"></i></MatIcon>
         </MatNavItem>
-        <MatDivider></MatDivider>
-        <MatNavItem Href="counter">
-            Counter <MatIcon Class="ml-auto mr-1"><i class="fas fa-minus" aria-hidden="true"></i></MatIcon><MatIcon><i class="fas fa-plus"></i></MatIcon>
+        <MatDivider Class="m-0"></MatDivider>
+        <MatNavItem Href="counter" Class="m-0 rounded-0">
+            Counter <MatIcon Class="ml-auto mr-1"><i class="fas fa-minus" aria-hidden="true"></i></MatIcon><MatIcon><i class="fas fa-plus" aria-hidden="true"></i></MatIcon>
         </MatNavItem>
-        <MatDivider></MatDivider>
-        <MatNavItem Href="random">
+        <MatDivider Class="m-0"></MatDivider>
+        <MatNavItem Href="random" Class="m-0 rounded-0">
             Random <MatIcon Class="ml-auto"><i class="@randomDieNumber" aria-hidden="true"></i></MatIcon>
         </MatNavItem>
-        <MatDivider></MatDivider>
-        <MatNavItem Href="bottoms-up">
-            Bottom's Up <MatIcon Class="ml-auto"><i class="fas fa-long-arrow-alt-up"></i></MatIcon>
+        <MatDivider Class="m-0"></MatDivider>
+        <MatNavItem Href="bottoms-up" Class="m-0 rounded-0">
+            Bottom's Up <MatIcon Class="ml-auto"><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></MatIcon>
+        </MatNavItem>
+        <MatDivider Class="m-0"></MatDivider>
+        <MatNavItem Href="privacy" Class="m-0 rounded-0">
+            Privacy Policy <MatIcon Class="ml-auto"><i class="fas fa-user-secret" aria-hidden="true"></i></MatIcon>
         </MatNavItem>
     </MatNavMenu>
 

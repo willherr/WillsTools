@@ -1,4 +1,4 @@
-﻿<div class="card d-inline-block m-sm-4 mb-4 mx-3 w-100 w-sm-auto">
+﻿<div class="card d-inline-block m-sm-4 mx-3 w-100 w-sm-auto">
     <div class="card-header text-left">
         <input class="pl-1 h6 card-title d-inline-block mb-0 bg-transparent border-0 w-75" type="text" placeholder="@(Model.IsPlaceHolder ? Model.Name : null)" value="@(Model.IsPlaceHolder ? null : Model.Name)" @onchange="@(e => Model.Name = e.Value?.ToString())" />
         <button class="float-right close p-0" @onclick="@(() => OnRemoveWidget.InvokeAsync(Model.Id))"><span>x</span></button>

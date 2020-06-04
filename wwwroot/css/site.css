@@ -107,3 +107,8 @@ html, body {
         width: auto !important;
     }
 }
+
+/* MatBlazor Style Overrides */
+:focus {
+    outline: none !important;
+}

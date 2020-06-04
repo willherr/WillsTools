@@ -3,7 +3,6 @@
 @inject HttpClient Http
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
-<div class="mx-2">
     <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
         @switch (ViewModel.InputType)
         {
@@ -73,7 +72,6 @@
     <div class="row no-gutters text-muted mt-2">
         @message
     </div>
-</div>
 
 @code {
     private string message;
