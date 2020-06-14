@@ -1,36 +1,38 @@
 ﻿@page "/random"
+@layout ActionLayout
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
 @inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
 
-    <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
-        @switch (ViewModel.InputType)
-        {
-            case InputType.Scramble:
-            case InputType.OneAtATime:
-                <InputText class="col col-lg-6 mr-2 pl-1" placeholder="Enter a random item" @bind-Value="ViewModel.Input"></InputText>
-                break;
+<div class="row no-gutters justify-content-center">
+    <div class="col col-sm-8 col-md-6 col-lg-4">
+        <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
+            @switch (ViewModel.InputType)
+            {
+                case InputType.Scramble:
+                case InputType.OneAtATime:
+                    <InputText class="mr-2 pl-1" placeholder="Enter a random item" @bind-Value="ViewModel.Input"></InputText>
+                    break;
 
-            case InputType.Range:
-                <InputText class="col col-lg-3 mr-2 pl-1" placeholder="Start" @bind-Value="ViewModel.InputRangeStart"></InputText>
-                <span>-</span>
-                <InputText class="col col-lg-3 mx-2 pl-1" placeholder="End" @bind-Value="ViewModel.InputRangeEnd"></InputText>
-                break;
-        }
+                case InputType.Range:
+                    <InputText class="mr-2 pl-1" placeholder="Start" @bind-Value="ViewModel.InputRangeStart"></InputText>
+                    <span>-</span>
+                    <InputText class="mx-2 pl-1" placeholder="End" @bind-Value="ViewModel.InputRangeEnd"></InputText>
+                    break;
+            }
 
-        @if (InputType.Word == ViewModel.InputType)
-        {
-            <button class="btn btn-primary col col-lg-6" @onclick="RandomWord">Random Word!</button>
-        }
-        else
-        {
-            <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
-        }
-    </EditForm>
+            @if (InputType.Word == ViewModel.InputType)
+            {
+                <button class="btn btn-primary w-100" @onclick="RandomWord">Random Word!</button>
+            }
+            else
+            {
+                <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+            }
+        </EditForm>
 
-    @if (ViewModel.Items.Any() && new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
-    {
-        <div class="col-lg-6">
+        @if (ViewModel.Items.Any() && new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
+        {
             <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 225px">
                 @foreach (var item in ViewModel.Items)
                 {
@@ -47,37 +49,38 @@
                     </li>
                 }
             </ol>
-        </div>
-    }
+        }
 
-    @if (new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
-    {
-        <div class="row no-gutters col col-lg-6 justify-content-between p-0">
-            <div class="row no-gutters">
-                <button @onclick="_ => ViewModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
-                <button @onclick="_ => ViewModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
-                <button @onclick="_ => ViewModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
+        @if (new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
+        {
+            <div class="row no-gutters col col-lg-6 justify-content-between p-0">
+                <div class="row no-gutters">
+                    <button @onclick="_ => ViewModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
+                    <button @onclick="_ => ViewModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
+                    <button @onclick="_ => ViewModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
+                </div>
+                <div class="row no-gutters">
+                    <button @onclick="_ => ViewModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
+                    <button @onclick="_ => ViewModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
+                </div>
             </div>
-            <div class="row no-gutters">
-                <button @onclick="_ => ViewModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
-                <button @onclick="_ => ViewModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
-            </div>
+        }
+
+        <div class="w-100" @onclick="e => CopyResult()" style="cursor:pointer">
+            <div class="h-100 font-weight-bold rounded border p-1 border-primary">@(ViewModel.RandomItem ?? "...")</div>
         </div>
-    }
 
-    <div class="row no-gutters" @onclick="e => CopyResult()" style="cursor:pointer">
-        <div class="h-100 font-weight-bold rounded border p-1 border-primary col-lg-6 col">@(ViewModel.RandomItem ?? "...")</div>
+        <div class="row no-gutters text-muted mt-2">
+            @message
+        </div>
     </div>
-
-    <div class="row no-gutters text-muted mt-2">
-        @message
-    </div>
+</div>
 
 @code {
     private string message;
 
     public RandomViewModel ViewModel { get; set; }
-    [CascadingParameter] MainLayout Layout { get; set; }
+    [CascadingParameter] ActionLayout ActionLayout { get; set; }
 
     private Task RandomWord()
     {
@@ -111,6 +114,8 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
+
         if (localStorage.ContainKey(nameof(ViewModel)))
         {
             ViewModel = localStorage.GetItem<RandomViewModel>(nameof(ViewModel));
@@ -120,7 +125,7 @@
             ViewModel = new RandomViewModel
             {
                 Items = new List<RandomItem>
-                {
+        {
                     new RandomItem("Stars"),
                     new RandomItem("Diamonds"),
                     new RandomItem("Hearts"),
@@ -136,40 +141,41 @@
             StateHasChanged();
         });
 
-        base.OnInitialized();
-        Layout.Reset();
-        Layout.Title = "Random";
-        Layout.PageActions = new List<(string Name, Action Action)>
-        {
+        if (ActionLayout == null) return;
+        Console.WriteLine("Hello");
+        ActionLayout.Reset();
+        ActionLayout.Layout.Title = "Random";
+        ActionLayout.PageActions = new List<(string Name, Action Action)>
+{
             ("One-at-a-time", InitOneAtATime),
             ("Range", InitRange),
             ("Scramble", InitScramble),
             ("Word", InitWord)
         };
 
-        Layout.PageActions[(int)ViewModel.InputType].Action();
+        ActionLayout.PageActions[(int)ViewModel.InputType].Action();
 
         void InitOneAtATime()
         {
-            Layout.SubTitle = "One-at-a-time";
+            ActionLayout.SubTitle = "One-at-a-time";
             ViewModel.InputType = InputType.OneAtATime;
         }
 
         void InitRange()
         {
-            Layout.SubTitle = "Range";
+            ActionLayout.SubTitle = "Range";
             ViewModel.InputType = InputType.Range;
         }
 
         void InitScramble()
         {
-            Layout.SubTitle = "Scramble";
+            ActionLayout.SubTitle = "Scramble";
             ViewModel.InputType = InputType.Scramble;
         }
 
         void InitWord()
         {
-            Layout.SubTitle = "Word";
+            ActionLayout.SubTitle = "Word";
             ViewModel.InputType = InputType.Word;
         }
     }
@@ -181,13 +187,13 @@
         if (!firstRender)
         {
             localStorage.SetItem(nameof(ViewModel), ViewModel);
-            Debug.WriteLine(ViewModel.InputType);
         }
     }
 
-    private Task<string> GetRandomWord()
+    private async Task<string> GetRandomWord()
     {
-        return Http.GetFromJsonAsync<string[]>("https://random-word-api.herokuapp.com/word")
-            .ContinueWith(json => json.Result[0]);
+        const string url = "https://random-word-api.herokuapp.com/word";
+        var result = await Http.GetFromJsonAsync<string[]>(url);
+        return result[0];
     }
 }

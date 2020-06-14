@@ -1,0 +1,18 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+@implements ILayout
+
+<CascadingValue Name="PageLayout" Value="this">
+    <div class="p-md-4 p-2">
+        @Body
+    </div>
+</CascadingValue>
+
+@code {
+    [CascadingParameter(Name = "MainLayout")] public MainLayout Layout { get; set; }
+
+    public void Reset()
+    {
+        Layout.Reset();
+    }
+}

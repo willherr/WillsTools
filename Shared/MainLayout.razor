@@ -1,10 +1,11 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@implements ILayout  
 
 <Title>@(string.IsNullOrEmpty(Title) ? null : $"{Title} | ")Will's Tools</Title>
 
-<CascadingValue Value="this">
+<CascadingValue Name="MainLayout" Value="this">
     <MatAppBarContainer Class="h-100">
         <MatAppBar Class="mat-elevation-z4" Fixed="true">
             <MatAppBarRow>
@@ -97,34 +98,10 @@
         }
     }
 
-    private string subTitle;
-    public string SubTitle
-    {
-        get => subTitle;
-        set
-        {
-            subTitle = value;
-            StateHasChanged();
-        }
-    }
-
-    private List<(string Name, Action Action)> pageActions = new List<(string Name, Action Action)>();
-    public List<(string Name, Action Action)> PageActions
-    {
-        get => pageActions;
-        set
-        {
-            pageActions = value;
-            StateHasChanged();
-        }
-    }
-
     public void Reset()
     {
         openedDrawer = false;
-        subTitle = null;
         title = null;
-        pageActions = new List<(string Name, Action Action)>();
         StateHasChanged();
     }
 

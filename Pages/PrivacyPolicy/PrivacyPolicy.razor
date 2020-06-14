@@ -1,32 +1,33 @@
 ﻿@page "/privacy"
+@layout PageLayout
 
-    <h4>Updates to this Policy</h4>
-    <p>
-        Updates to this policy can happen at any time and will go into affect without notice.
-    </p>
+<h4>Updates to this Policy</h4>
+<p>
+    Updates to this policy can happen at any time and will go into affect without notice.
+</p>
 
-    <h4>Server Storage</h4>
-    <p>
-        This site retains no information about you whatsoever, identifying or otherwise.
-    </p>
+<h4>Server Storage</h4>
+<p>
+    This site retains no information about you whatsoever, identifying or otherwise.
+</p>
 
-    <h4>
-        Browser Storage
-    </h4>
-    <p>
-        This site does use some forms of persistant browser storage.
-        This is only to give you as great of an experience that the site can possibly provide.
-        You can turn this off in your browser's settings.
-    </p>
+<h4>
+    Browser Storage
+</h4>
+<p>
+    This site does use some forms of persistant browser storage.
+    This is only to give you as great of an experience that the site can possibly provide.
+    You can turn this off in your browser's settings.
+</p>
 
-    <h4>Cookies</h4>
-    <p>
-        This site does not use any cookies directly, only through verified third-party vendors.
-        @*These third-party vendors use cookies in order to provide you relevant ads.*@
-        You can opt out of all cookies through your browser's settings.
-    </p>
+<h4>Cookies</h4>
+<p>
+    This site does not use any cookies directly, only through verified third-party vendors.
+    @*These third-party vendors use cookies in order to provide you relevant ads.*@
+    You can opt out of all cookies through your browser's settings.
+</p>
 
-    @*<h4>Ads</h4>
+@*<h4>Ads</h4>
     <p>
         Any ads that are displayed on this site are provided by third-parties.
         They are screened for any malware and are verified as safe.
@@ -35,29 +36,30 @@
         Feel free to click ads when they interest you, but do not do it to benefit me, the publisher.
     </p>*@
 
-    <h4>Google Analytics</h4>
-    <p>
-        This site makes use of Google Analytics, which I use to determine in general who my audience is.
-        Find out more information <a href="www.google.com/policies/privacy/partners/">here</a>.
-    </p>
+<h4>Google Analytics</h4>
+<p>
+    This site makes use of Google Analytics, which I use to determine in general who my audience is.
+    Find out more information <a href="www.google.com/policies/privacy/partners/">here</a>.
+</p>
 
-    <h4>Acceptance</h4>
-    <p>
-        By continuing to use this site, you accept this site using browser storage, third-party cookies, Google Analytics, and other criteria mentioned on this page.
-    </p>
+<h4>Acceptance</h4>
+<p>
+    By continuing to use this site, you accept this site using browser storage, third-party cookies, Google Analytics, and other criteria mentioned on this page.
+</p>
 
-    <code>
-        - Will, the publisher. If you want, you can <a href="https://www.linkedin.com/in/william-herrmann-155a09103">contact me on LinkedIn</a>.
-        Be sure to mention Will's Tools.
-    </code>
+<code>
+    - Will, the publisher. If you want, you can <a href="https://www.linkedin.com/in/william-herrmann-155a09103">contact me on LinkedIn</a>.
+    Be sure to mention Will's Tools.
+</code>
 
 @code {
-    [CascadingParameter] MainLayout Layout { get; set; }
+    [CascadingParameter(Name ="PageLayout")] PageLayout PageLayout { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Layout.Reset();
-        Layout.Title = "Privacy Policy";
+        if (PageLayout == null) return;
+        PageLayout.Reset();
+        PageLayout.Layout.Title = "Privacy Policy";
     }
 }

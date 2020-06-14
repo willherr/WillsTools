@@ -1,0 +1,74 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+@implements ILayout
+
+<CascadingValue Value="this">
+    <MatAppBarContainer Class="h-100">
+        <MatThemeProvider Theme="new MatTheme { Primary = MatThemeColors.Grey._400.Value }">
+            <MatAppBar Class="mat-elevation-z2">
+                <MatAppBarRow>
+                    <MatAppBarSection>
+                        @if (PageActions != null)
+                        {
+                            <MatIconButton Class="d-flex mr-2" OnClick="_ => Menu.OpenAsync()" RefBack="@buttonForwardRef">
+                                <i class="fas fa-bolt ml-1"></i>
+                            </MatIconButton>
+                            <MatMenu @ref="Menu" TargetForwardRef="@buttonForwardRef">
+                                <MatList>
+                                    @foreach (var action in PageActions)
+                                    {
+                                        <MatListItem>
+                                            <MatButton Class="text-body" Label="@action.Name" OnClick="_ => action.Action()"></MatButton>
+                                        </MatListItem>
+                                    }
+                                </MatList>
+                            </MatMenu>
+                        }
+                        @SubTitle
+                    </MatAppBarSection>
+                </MatAppBarRow>
+            </MatAppBar>
+        </MatThemeProvider>
+        <MatAppBarContent>
+            <div class="p-md-4 p-2">
+                @Body
+            </div>
+        </MatAppBarContent>
+    </MatAppBarContainer>
+</CascadingValue>
+
+@code {
+    [CascadingParameter(Name = "MainLayout")] public MainLayout Layout { get; set; }
+
+    private string subTitle;
+    public string SubTitle
+    {
+        get => subTitle;
+        set
+        {
+            subTitle = value;
+            StateHasChanged();
+        }
+    }
+
+    private List<(string Name, Action Action)> pageActions;
+    public List<(string Name, Action Action)> PageActions
+    {
+        get => pageActions;
+        set
+        {
+            pageActions = value;
+            StateHasChanged();
+        }
+    }
+
+    ForwardRef buttonForwardRef = new ForwardRef();
+    BaseMatMenu Menu;
+
+    public void Reset()
+    {
+        subTitle = null;
+        pageActions = null;
+        Layout.Reset();
+    }
+}
