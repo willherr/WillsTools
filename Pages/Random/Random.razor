@@ -11,33 +11,34 @@
             {
                 case InputType.Scramble:
                 case InputType.OneAtATime:
-                    <InputText class="mr-2 pl-1" placeholder="Enter a random item" @bind-Value="ViewModel.Input"></InputText>
+                    <MatStringField Class="mr-2" Label="Enter a random item" Required="true" @bind-Value="@ViewModel.Input"></MatStringField>
                     break;
 
                 case InputType.Range:
-                    <InputText class="mr-2 pl-1" placeholder="Start" @bind-Value="ViewModel.InputRangeStart"></InputText>
+                    <MatStringField Class="mr-2" Label="Start" Required="true" @bind-Value="ViewModel.InputRangeStart"></MatStringField>
                     <span>-</span>
-                    <InputText class="mx-2 pl-1" placeholder="End" @bind-Value="ViewModel.InputRangeEnd"></InputText>
+                    <MatStringField Class="mx-2" Label="End" Required="true" @bind-Value="ViewModel.InputRangeEnd"></MatStringField>
                     break;
             }
 
             @if (InputType.Word == ViewModel.InputType)
             {
-                <button class="btn btn-primary w-100" @onclick="RandomWord">Random Word!</button>
+                <MatButton Class="w-100" OnClick="RandomWord">Random Word!</MatButton>
             }
             else
             {
-                <button class="btn btn-success px-1 py-0"><i class="fas fa-plus font-size-large"></i></button>
+                <MatIconButton type="submit" Icon="@MatIconNames.Add"></MatIconButton>
             }
         </EditForm>
 
         @if (ViewModel.Items.Any() && new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
         {
-            <ol class="mb-4 list-unstyled ml-4 overflow-auto" style="max-height: 225px">
+            // mat list
+            <ol class="mb-4 ml-4 p-0 overflow-auto" style="max-height: 225px; list-style: none;">
                 @foreach (var item in ViewModel.Items)
                 {
                     <li>
-                        <i class="fas fa-times btn p-0 text-danger mr-2" @onclick="_ => ViewModel.Items.Remove(item)"></i>
+                        <i class="fas fa-times btn p-0 text-danger mr-2" style="cursor: pointer;" @onclick="_ => ViewModel.Items.Remove(item)"></i>
                         @if (item.Popped)
                         {
                             <del class="text-secondary">@item.Name</del>
@@ -55,13 +56,13 @@
         {
             <div class="row no-gutters col col-lg-6 justify-content-between p-0">
                 <div class="row no-gutters">
-                    <button @onclick="_ => ViewModel.Randomize()" class="mb-4 mr-2 btn btn-primary">Randomize!</button>
-                    <button @onclick="_ => ViewModel.Get()" class="mb-4 mr-2 btn btn-primary">Get!</button>
-                    <button @onclick="_ => ViewModel.Pop()" class="mb-4 mr-2 btn btn-primary">Pop!</button>
+                    <MatButton OnClick="_ => ViewModel.Randomize()" Class="mb-4 mr-2">Randomize!</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Get()" Class="mb-4 mr-2 btn btn-primary">Get!</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Pop()" Class="mb-4 mr-2 btn btn-primary">Pop!</MatButton>
                 </div>
                 <div class="row no-gutters">
-                    <button @onclick="_ => ViewModel.Reset(false)" class="mb-4 mr-2 btn btn-warning">Reset</button>
-                    <button @onclick="_ => ViewModel.Reset()" class="mb-4 btn btn-danger">Clear</button>
+                    <MatButton OnClick="_ => ViewModel.Reset(false)" Class="mb-4 mr-2 btn btn-warning">Reset</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Reset()" Class="mb-4 btn btn-danger">Clear</MatButton>
                 </div>
             </div>
         }
@@ -125,7 +126,7 @@
             ViewModel = new RandomViewModel
             {
                 Items = new List<RandomItem>
-        {
+{
                     new RandomItem("Stars"),
                     new RandomItem("Diamonds"),
                     new RandomItem("Hearts"),
