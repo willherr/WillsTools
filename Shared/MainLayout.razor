@@ -10,7 +10,7 @@
         <MatAppBar Class="mat-elevation-z4" Fixed="true">
             <MatAppBarRow>
                 <MatAppBarSection>
-                    <MatIconButton Class="d-flex" Icon="menu" OnClick="ClickSidebarButton"></MatIconButton>
+                    <MatIconButton Icon="menu" OnClick="ClickSidebarButton"></MatIconButton>
                     <MatAppBarTitle>
                         <i class="fas fa-tools fa-lg mr-1"></i>
                         @if (string.IsNullOrEmpty(Title))
@@ -32,7 +32,7 @@
                 </MatAppBarSection>
                 <MatAppBarSection Align="MatAppBarSectionAlign.End">
                     <MatTooltip Tooltip="Will's source code." Wrap="true" Position="MatTooltipPosition.Left">
-                        <MatIconButton Class="d-flex" Link="https://github.com/willherr/WillsTools" Target="_blank">
+                        <MatIconButton Link="https://github.com/willherr/WillsTools" Target="_blank">
                             <i class="fab fa-github" aria-hidden="true"></i>
                         </MatIconButton>
                     </MatTooltip>

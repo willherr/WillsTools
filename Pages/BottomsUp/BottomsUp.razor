@@ -4,19 +4,17 @@
 
 @if (!initializing)
 {
-    <div class="row no-gutters justify-content-center">
-        <div class="row no-gutters flex-column-reverse mx-2 text-right w-md-75">
-            @foreach (var line in Content)
-            {
-                <p>@line</p>
-            }
-            <br />
-            <hr class="w-100" />
-            <br />
-            <label>@BottomsUpLine("Enter text to \"Bottom's Up\"")</label>
-            <input type="text" size="1" class="w-100" @oninput="BottomsUpTool" />
-            <p>@BottomsUpOutput</p>
-        </div>
+    <div class="d-flex flex-column-reverse mx-2 text-right">
+        @foreach (var line in Content)
+        {
+            <p>@line</p>
+        }
+        <br />
+        <hr class="w-100" />
+        <br />
+        <label>@BottomsUpLine("Enter text to \"Bottom's Up\"")</label>
+        <input type="text" size="1" class="w-100" @oninput="BottomsUpTool" />
+        <p>@BottomsUpOutput</p>
     </div>
 }
 

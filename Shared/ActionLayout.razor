@@ -10,7 +10,7 @@
                     <MatAppBarSection>
                         @if (PageActions != null)
                         {
-                            <MatIconButton Class="d-flex mr-2" OnClick="_ => Menu.OpenAsync()" RefBack="@buttonForwardRef">
+                            <MatIconButton Class="mr-2" OnClick="_ => Menu.OpenAsync()" RefBack="@buttonForwardRef">
                                 <i class="fas fa-bolt ml-1"></i>
                             </MatIconButton>
                             <MatMenu @ref="Menu" TargetForwardRef="@buttonForwardRef">

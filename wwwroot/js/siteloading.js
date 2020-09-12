@@ -14,6 +14,7 @@
     $loading.textContent = "";
     let counter = 0;
     let variation = 0;
+    const $container = document.querySelector("#AD_NATIVE_BANNER_CONTAINER");
 
     /* main */
     const loadingInterval = setInterval(function () {
@@ -22,10 +23,12 @@
             clearInterval(loadingInterval);
 
             if (!localStorage.getItem("NO_ADS")) {
-                document.querySelector("#AD_NATIVE_BANNER_CONTAINER").classList.remove("d-none");
-                setTimeout(function () {
-                    document.querySelector("#HIDE_ADS").classList.remove("d-none");
-                }, 2000);
+                if ($container) {
+                    $container.classList.remove("d-none");
+                    setTimeout(function () {
+                        document.querySelector("#HIDE_ADS").classList.remove("d-none");
+                    }, 2000);
+                }
             }
         } else {
             let loadingText = variations[variation];
@@ -35,7 +38,9 @@
                 variation = ++variation % variations.length;
 
                 if (variation === 0) {
-                    document.querySelector("#AD_NATIVE_BANNER_CONTAINER").removeClass("d-none");
+                    if ($container) {
+                        $container.removeClass("d-none");
+                    }
                     clearInterval(loadingInterval);
                     $loading.textContent = "";
                     $image.classList.remove("d-none");

@@ -1,12 +1,10 @@
 ﻿<!DOCTYPE html>
 <html class="h-100">
-
 <!--#DEL
     #DEL On publish:
     #DEL    Any line containing "#DEL" will be removed, including this one!
     #DEL    Also all hosted files will be cache-busted (querystring "?v=" is assigned a GUID)
-#DEL-->
-
+    #DEL-->
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!--#DEL
@@ -17,32 +15,24 @@
     <meta name="google-site-verification" content="KwurvVlB9_Gx6dTKgGnFS5mS87mlMnZz7mmxmrr1ELg" />
     <title>Will's Tools</title>
     <meta name="description" content="A bunch of useful (and useless) tools! Random generator, counter, and other custom tools.">
-
-    <!-- Metadata -->
+    <!--#DEL Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" type="image/png" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="48x48" href="favicon.ico" />
     <link href="manifest.json" rel="manifest" />
-
-    <!--  This is for development
-    #DEL-->
-    <base href="/" />
-    <!--#DEL
-    -->
-    <!--#DEL This is your repo's name.
+    <base href="/" /> <!--#DEL This is for development -->
+    <!--#DEL This is your repo's name / for production.
     <base href="/WillsTools/" />
     #DEL-->
-    <!-- Third Party CSS -->
-    <link href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <!--#DEL Third Party CSS -->
+    <!--<link href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
     <script src="_content/MatBlazor/dist/matBlazor.js"></script>
     <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
-
-    <!-- Custom CSS -->
+    <!--#DEL Custom CSS -->
     <link href="css/site.css?v=" rel="stylesheet" />
 </head>
-
 <body class="h-100">
     <app class="h-100">
         <noscript><a title="Reload" href="" onclick="() => window.location.reload(true)"><img style="display: block; height: 100px; width: 100px;" alt="Failed to load" class="shadow rounded-circle" src="content/t-rex.png" /></a></noscript>
@@ -50,7 +40,6 @@
             <a title="Reload" href="" onclick="() => window.location.reload(true)" class="d-none"><img style="height: 100px; width: 100px;" alt="Failed to load" class="shadow rounded-circle" src="content/t-rex.png" /></a>
         </div>
     </app>
-
     <!--#DEL
     <div id="AD_NATIVE_BANNER_CONTAINER" class="d-none" style="display:none;">
         <div class="row no-gutters align-items-baseline">
@@ -60,33 +49,23 @@
         <div id="container-88bc8fa936bd3ad10660eb1a41aa96de"></div>
     </div>
     #DEL-->
-
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
         <a class="dismiss">X</a>
     </div>
-
-    <!-- Robot links -->
-    <a href="/bottoms-up" class="d-none">Bottom's Up</a>
-    <a href="/counter" class="d-none">Counter</a>
-    <a href="/privacy" class="d-none">Privacy Policy</a>
-    <a href="/random" class="d-none">Random</a>
-
-    <!-- Custom Scripts -->
+    <!--#DEL Custom Scripts -->
     <script src="js/githubhack.js?v="></script>
     <script src="js/siteloading.js?v="></script>
     <script src="js/utility.js?v="></script>
-
-    <!-- Framework Scripts -->
+    <!--#DEL Framework Scripts -->
     <script src="_framework/blazor.webassembly.js?v=" type="text/javascript"></script>
     <script>
-        navigator.serviceWorker.register(
-            'service-worker.js' // 
-            /*#DEL
-            'service-worker.publish.js' #DEL
-            #DEL*/
-        );
+        navigator.serviceWorker.register('service-worker.js');
+        /*#DEL
+         * #DEL currently not using this... just using the dev one above
+         * #DEL navigator.serviceWorker.register('service-worker.publish.js');
+        #DEL*/
     </script>
 </body>
 </html>
