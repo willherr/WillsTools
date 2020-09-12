@@ -6,16 +6,14 @@
 
 @if (!initializing)
 {
-    <div class="row no-gutters justify-content-center">
-        @if (CounterWidgets.Count == 0)
-        {
-            <span class="text-info text-center">Click the options button to add some counters!</span>
-        }
-        @foreach (var counterWidget in CounterWidgets)
-        {
-            <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
-        }
-    </div>
+    @if (CounterWidgets.Count == 0)
+    {
+        <span class="text-info text-center">Click the options button to add some counters!</span>
+    }
+    @foreach (var counterWidget in CounterWidgets)
+    {
+        <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
+    }
 }
 
 
@@ -80,7 +78,7 @@
         ActionLayout.Reset();
         ActionLayout.Layout.Title = "Counter";
         ActionLayout.PageActions = new List<(string Name, Action Action)>
-    {
+{
             ("Add Counter", AddCounter),
             ("Reset Counters", ResetCounters),
             ("Increment Counters", IncrementCounters),
@@ -97,7 +95,7 @@
             if ((CounterWidgets?.Count ?? 0) == 0)
             {
                 CounterWidgets = new List<CounterWidgetModel>
-                {
+            {
                     new CounterWidgetModel()
                 };
             }
