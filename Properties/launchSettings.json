@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WillsToolsWasm": {
+    "WillsTools": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

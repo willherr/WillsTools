@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SysRandom = System.Random;
 
-namespace WillsToolsWasm.Pages.Random
+namespace WillsTools.Pages.Random
 {
     public class RandomViewModel
     {

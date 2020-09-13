@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace WillsToolsWasm
+namespace WillsTools
 {
     public class CounterWidgetModel
     {
