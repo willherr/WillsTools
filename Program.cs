@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Blazored.LocalStorage;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
-namespace WillsToolsWasm
+namespace CassandrasCookbook
 {
     public class Program
     {
