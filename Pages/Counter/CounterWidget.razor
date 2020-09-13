@@ -1,0 +1,26 @@
+﻿<MatCard Class="d-inline-block m-sm-4 mb-4 w-100 w-sm-auto">
+    <div>
+        <input class="pl-1 h6 card-title d-inline-block mb-0 bg-transparent border-0 w-75" type="text" placeholder="@(Model.IsPlaceHolder ? Model.Name : null)" value="@(Model.IsPlaceHolder ? null : Model.Name)" @onchange="@(e => Model.Name = e.Value?.ToString())" />
+        <MatIcon Style="cursor: pointer" Class="float-right text-muted font-size-large" @onclick="() => OnRemoveWidget.InvokeAsync(Model.Id)" Icon="close"></MatIcon>
+    </div>
+    <MatCardContent>
+        <MatBody1>
+            <input class="bg-transparent border-0 text-center w-100 fa-2x" type="text" size="8" maxlength="8" value="@(Model.IsPlaceHolder ? null : Model.CurrentCount.ToString())" onkeypress="if ((event.keyCode ? event.keyCode : event.which) === 13) { $(this).blur(); return; } let c = String.fromCharCode(event.keyCode); return c === '-' || Number.isInteger(Number(c));" placeholder="@(Model.IsPlaceHolder ? "0" : null)" @onchange="@(e => Model.CurrentCount = int.TryParse(e.Value?.ToString() ?? "", out var result) ? result : Model.CurrentCount)" />
+        </MatBody1>
+    </MatCardContent>
+    <MatCardActions>
+        <MatCardActionButtons>
+            <MatIconButton Icon="@MatIconNames.Remove" OnClick="() => --Model.CurrentCount"></MatIconButton>
+        </MatCardActionButtons>
+        <MatCardActionIcons>
+            <MatIconButton Icon="@MatIconNames.Add" OnClick="() => ++Model.CurrentCount"></MatIconButton>
+        </MatCardActionIcons>
+    </MatCardActions>
+</MatCard>
+
+@code {
+    #region Initialization
+    [Parameter] public EventCallback<int> OnRemoveWidget { get; set; }
+    [Parameter] public CounterWidgetModel Model { get; set; }
+    #endregion
+}

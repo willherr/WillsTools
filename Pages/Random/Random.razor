@@ -1,0 +1,200 @@
+﻿@page "/random"
+@layout ActionLayout
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
+
+<div class="row no-gutters justify-content-center">
+    <div class="col col-sm-8 col-md-6 col-lg-4">
+        <EditForm Model="ViewModel" OnValidSubmit="ViewModel.AddInputToList" class="mb-4 row no-gutters align-items-center">
+            @switch (ViewModel.InputType)
+            {
+                case InputType.Scramble:
+                case InputType.OneAtATime:
+                    <MatStringField Class="mr-2" Label="Enter a random item" Required="true" @bind-Value="@ViewModel.Input"></MatStringField>
+                    break;
+
+                case InputType.Range:
+                    <MatStringField Class="mr-2" Label="Start" Required="true" @bind-Value="ViewModel.InputRangeStart"></MatStringField>
+                    <span>-</span>
+                    <MatStringField Class="mx-2" Label="End" Required="true" @bind-Value="ViewModel.InputRangeEnd"></MatStringField>
+                    break;
+            }
+
+            @if (InputType.Word == ViewModel.InputType)
+            {
+                <MatButton Class="w-100" OnClick="RandomWord">Random Word!</MatButton>
+            }
+            else
+            {
+                <MatIconButton type="submit" Icon="@MatIconNames.Add"></MatIconButton>
+            }
+        </EditForm>
+
+        @if (ViewModel.Items.Any() && new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
+        {
+            // mat list
+            <ol class="mb-4 ml-4 p-0 overflow-auto" style="max-height: 225px; list-style: none;">
+                @foreach (var item in ViewModel.Items)
+                {
+                    <li>
+                        <i class="fas fa-times btn p-0 text-danger mr-2" style="cursor: pointer;" @onclick="_ => ViewModel.Items.Remove(item)"></i>
+                        @if (item.Popped)
+                        {
+                            <del class="text-secondary">@item.Name</del>
+                        }
+                        else
+                        {
+                            <span>@item.Name</span>
+                        }
+                    </li>
+                }
+            </ol>
+        }
+
+        @if (new[] { InputType.OneAtATime, InputType.Range }.Contains(ViewModel.InputType))
+        {
+            <div class="row no-gutters col col-lg-6 justify-content-between p-0">
+                <div class="row no-gutters">
+                    <MatButton OnClick="_ => ViewModel.Randomize()" Class="mb-4 mr-2">Randomize!</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Get()" Class="mb-4 mr-2 btn btn-primary">Get!</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Pop()" Class="mb-4 mr-2 btn btn-primary">Pop!</MatButton>
+                </div>
+                <div class="row no-gutters">
+                    <MatButton OnClick="_ => ViewModel.Reset(false)" Class="mb-4 mr-2 btn btn-warning">Reset</MatButton>
+                    <MatButton OnClick="_ => ViewModel.Reset()" Class="mb-4 btn btn-danger">Clear</MatButton>
+                </div>
+            </div>
+        }
+
+        <div class="w-100" @onclick="e => CopyResult()" style="cursor:pointer">
+            <div class="h-100 font-weight-bold rounded border p-1 border-primary">@(ViewModel.RandomItem ?? "...")</div>
+        </div>
+
+        <div class="row no-gutters text-muted mt-2">
+            @message
+        </div>
+    </div>
+</div>
+
+@code {
+    private string message;
+
+    public RandomViewModel ViewModel { get; set; }
+    [CascadingParameter] ActionLayout ActionLayout { get; set; }
+
+    private Task RandomWord()
+    {
+        var source = new System.Threading.CancellationTokenSource();
+        ViewModel.RandomItem = ".";
+
+        Task.Run(() =>
+        {
+            while (true)
+            {
+                ViewModel.RandomItem += ".";
+                StateHasChanged();
+                Task.Delay(100).Wait();
+            }
+        }, source.Token);
+
+        return GetRandomWord().ContinueWith(word =>
+        {
+            source.Cancel();
+            ViewModel.RandomItem = word.Result;
+            StateHasChanged();
+        });
+    }
+
+    private async Task CopyResult()
+    {
+        await JSRuntime.InvokeVoidAsync("Utility.copyText", ViewModel.RandomItem);
+        message = "Copied to clipboard.";
+        _ = Task.Delay(5000).ContinueWith(_ => message = null).ContinueWith(_ => StateHasChanged());
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (localStorage.ContainKey(nameof(ViewModel)))
+        {
+            ViewModel = localStorage.GetItem<RandomViewModel>(nameof(ViewModel));
+        }
+        else
+        {
+            ViewModel = new RandomViewModel
+            {
+                Items = new List<RandomItem>
+{
+                    new RandomItem("Stars"),
+                    new RandomItem("Diamonds"),
+                    new RandomItem("Hearts"),
+                    new RandomItem("Clubs"),
+                    new RandomItem("Spades"),
+                }
+            };
+        }
+
+        GetRandomWord().ContinueWith(word =>
+        {
+            ViewModel.RandomItem = word.Result;
+            StateHasChanged();
+        });
+
+        if (ActionLayout == null) return;
+        Console.WriteLine("Hello");
+        ActionLayout.Reset();
+        ActionLayout.Layout.Title = "Random";
+        ActionLayout.PageActions = new List<(string Name, Action Action)>
+{
+            ("One-at-a-time", InitOneAtATime),
+            ("Range", InitRange),
+            ("Scramble", InitScramble),
+            ("Word", InitWord)
+        };
+
+        ActionLayout.PageActions[(int)ViewModel.InputType].Action();
+
+        void InitOneAtATime()
+        {
+            ActionLayout.SubTitle = "One-at-a-time";
+            ViewModel.InputType = InputType.OneAtATime;
+        }
+
+        void InitRange()
+        {
+            ActionLayout.SubTitle = "Range";
+            ViewModel.InputType = InputType.Range;
+        }
+
+        void InitScramble()
+        {
+            ActionLayout.SubTitle = "Scramble";
+            ViewModel.InputType = InputType.Scramble;
+        }
+
+        void InitWord()
+        {
+            ActionLayout.SubTitle = "Word";
+            ViewModel.InputType = InputType.Word;
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (!firstRender)
+        {
+            localStorage.SetItem(nameof(ViewModel), ViewModel);
+        }
+    }
+
+    private async Task<string> GetRandomWord()
+    {
+        const string url = "https://random-word-api.herokuapp.com/word";
+        var result = await Http.GetFromJsonAsync<string[]>(url);
+        return result[0];
+    }
+}

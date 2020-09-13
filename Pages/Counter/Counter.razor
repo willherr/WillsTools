@@ -1,0 +1,117 @@
+﻿@page "/counter"
+@layout ActionLayout
+@inject IJSRuntime JSRuntime
+@inject ISyncLocalStorageService localStorage // also have option for an async provider (omit Sync from interface name)
+
+
+@if (!initializing)
+{
+    @if (CounterWidgets.Count == 0)
+    {
+        <span class="text-info text-center">Click the options button to add some counters!</span>
+    }
+    @foreach (var counterWidget in CounterWidgets)
+    {
+        <CounterWidget Model="counterWidget" OnRemoveWidget="RemoveCounter"></CounterWidget>
+    }
+}
+
+
+@code {
+    private bool initializing = true;
+    private bool ignoreChanges = false;
+
+    private void RemoveCounter(int id)
+    {
+        CounterWidgets.RemoveAt(id - 1);
+        for (int i = 1; i <= CounterWidgets.Count; i++)
+        {
+            CounterWidgets[i - 1].Id = i;
+        }
+    }
+
+    private void ChangeCounter(CounterWidgetModel counter)
+    {
+        if (!ignoreChanges)
+        {
+            CounterWidgets[counter.Id - 1] = counter;
+        }
+    }
+
+    private void AddCounter()
+    {
+        CounterWidgets.Add(new CounterWidgetModel(CounterWidgets.Count + 1)
+        {
+            OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter)
+        });
+    }
+
+    private void ResetCounters()
+    {
+        ignoreChanges = true;
+        CounterWidgets.ForEach(counter => counter.CurrentCount = 0);
+        ignoreChanges = false;
+    }
+
+    private void IncrementCounters()
+    {
+        ignoreChanges = true;
+        CounterWidgets.ForEach(counter => counter.CurrentCount++);
+        ignoreChanges = false;
+    }
+
+    private void DecrementCounters()
+    {
+        ignoreChanges = true;
+        CounterWidgets.ForEach(counter => counter.CurrentCount--);
+        ignoreChanges = false;
+    }
+
+    #region Initialization
+    private List<CounterWidgetModel> CounterWidgets { get; set; }
+    [CascadingParameter] ActionLayout ActionLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (ActionLayout == null) return;
+        ActionLayout.Reset();
+        ActionLayout.Layout.Title = "Counter";
+        ActionLayout.PageActions = new List<(string Name, Action Action)>
+{
+            ("Add Counter", AddCounter),
+            ("Reset Counters", ResetCounters),
+            ("Increment Counters", IncrementCounters),
+            ("Decrement Counters", DecrementCounters)
+        };
+        CounterWidgets = localStorage.ContainKey(nameof(CounterWidgets)) ? localStorage.GetItem<List<CounterWidgetModel>>(nameof(CounterWidgets)) : new List<CounterWidgetModel>();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            if ((CounterWidgets?.Count ?? 0) == 0)
+            {
+                CounterWidgets = new List<CounterWidgetModel>
+            {
+                    new CounterWidgetModel()
+                };
+            }
+
+            foreach (var counterWidget in CounterWidgets)
+            {
+                counterWidget.OnChange = EventCallback.Factory.Create<CounterWidgetModel>(this, ChangeCounter);
+            }
+
+            initializing = false;
+            StateHasChanged();
+        }
+        else
+        {
+            localStorage.SetItem(nameof(CounterWidgets), CounterWidgets);
+        }
+    }
+    #endregion
+}

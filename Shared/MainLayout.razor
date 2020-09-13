@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 @implements ILayout  
 
-<Title>@(string.IsNullOrEmpty(Title) ? null : $"{Title} | ")Cassandra's Cookbook</Title>
+<Title>@(string.IsNullOrEmpty(Title) ? null : $"{Title} | ")Will's Tools</Title>
 
 <CascadingValue Name="MainLayout" Value="this">
     <MatAppBarContainer Class="h-100">
@@ -12,10 +12,10 @@
                 <MatAppBarSection>
                     <MatIconButton Icon="menu" OnClick="ClickSidebarButton"></MatIconButton>
                     <MatAppBarTitle>
-                        <i class="fas fa-utensils fa-lg mr-1"></i>
+                        <i class="fas fa-tools fa-lg mr-1"></i>
                         @if (string.IsNullOrEmpty(Title))
                         {
-                            <text>Cassandra's Cookbook</text>
+                            <text>Will's Tools</text>
                         }
                         else
                         {
@@ -24,15 +24,15 @@
                                     @Title
                                 </ChildContent>
                                 <ElseContent>
-                                    Cassandra's Cookbook
+                                    Will's Tools
                                 </ElseContent>
                             </MatHidden>
                         }
                     </MatAppBarTitle>
                 </MatAppBarSection>
                 <MatAppBarSection Align="MatAppBarSectionAlign.End">
-                    <MatTooltip Tooltip="Source code" Wrap="true" Position="MatTooltipPosition.Left">
-                        <MatIconButton Link="https://github.com/willherr/CassandrasCookbook" Target="_blank">
+                    <MatTooltip Tooltip="Will's source code." Wrap="true" Position="MatTooltipPosition.Left">
+                        <MatIconButton Link="https://github.com/willherr/WillsTools" Target="_blank">
                             <i class="fab fa-github" aria-hidden="true"></i>
                         </MatIconButton>
                     </MatTooltip>

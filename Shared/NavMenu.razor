@@ -2,11 +2,49 @@
 
 <MatNavMenu>
     <MatNavItem Href="" Class="m-0 rounded-0">
-        Home <MatIcon Class="ml-auto"><i class="fas fa-home fa-fw" aria-hidden="true"></i></MatIcon>
+        Home <MatIcon Class="ml-auto"><i class="fas fa-home" aria-hidden="true"></i></MatIcon>
+    </MatNavItem>
+    <MatDivider Class="m-0"></MatDivider>
+
+    @{#if DEBUG}
+    <MatNavItem Href="test-code" Class="m-0 rounded-0">
+        Test Code <MatIcon Class="ml-auto"><i class="fas fa-vial" aria-hidden="true"></i></MatIcon>
+    </MatNavItem>
+    <MatDivider Class="m-0"></MatDivider>
+    @{#endif}
+
+    <MatNavItem Href="counter" Class="m-0 rounded-0">
+        Counter <MatIcon Class="ml-auto mr-1"><i class="fas fa-minus" aria-hidden="true"></i></MatIcon><MatIcon><i class="fas fa-plus" aria-hidden="true"></i></MatIcon>
+    </MatNavItem>
+    <MatDivider Class="m-0"></MatDivider>
+    <MatNavItem Href="random" Class="m-0 rounded-0">
+        Random <MatIcon Class="ml-auto"><i class="@randomDieNumber" aria-hidden="true"></i></MatIcon>
+    </MatNavItem>
+    <MatDivider Class="m-0"></MatDivider>
+    <MatNavItem Href="bottoms-up" Class="m-0 rounded-0">
+        Bottom's Up <MatIcon Class="ml-auto"><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></MatIcon>
     </MatNavItem>
     <MatDivider Class="m-0"></MatDivider>
     <MatNavItem Href="privacy" Class="m-0 rounded-0">
-        Privacy Policy <MatIcon Class="ml-auto"><i class="fas fa-user-secret fa-fw" aria-hidden="true"></i></MatIcon>
+        Privacy Policy <MatIcon Class="ml-auto"><i class="fas fa-user-secret" aria-hidden="true"></i></MatIcon>
     </MatNavItem>
     <MatDivider Class="m-0"></MatDivider>
 </MatNavMenu>
+
+@code {
+    private string randomDieNumber
+    {
+        get
+        {
+            switch (new Random().Next(6) + 1)
+            {
+                case 1: return "fas fa-dice-one";
+                case 2: return "fas fa-dice-two";
+                case 3: return "fas fa-dice-three";
+                case 4: return "fas fa-dice-four";
+                case 5: return "fas fa-dice-five";
+                default: return "fas fa-dice-six";
+            }
+        }
+    }
+}

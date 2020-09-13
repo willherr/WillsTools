@@ -3,10 +3,10 @@
 
     /* constructor */
     let variations = [
-        ["Loading", "Loading Cassandra's", "Loading Cassandra's Cookbook", "Loading", "Loading Cassandra's", "Loading Cassandra's Cookbook"],
-        ["Loading Cassandra's Cookbook", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook..", "Loading Cassandra's Cookbook...", "Loading Cassandra's Cookbook", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook..", "Loading Cassandra's Cookbook..."],
-        ["Loading Cassandra's Cookbook", "Loading Cassandra's", "Loading", "Loading Cassandra's Cookbook", "Loading Cassandra's", "Loading"],
-        ["Loading Cassandra's Cookbook...", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook", "Loading Cassandra's Cookbook", "Loading Cassandra's Cookbook...", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook.", "Loading Cassandra's Cookbook", "Loading Cassandra's Cookbook"],
+        ["Loading", "Loading Will's", "Loading Will's Tools", "Loading", "Loading Will's", "Loading Will's Tools"],
+        ["Loading Will's Tools", "Loading Will's Tools.", "Loading Will's Tools..", "Loading Will's Tools...", "Loading Will's Tools", "Loading Will's Tools.", "Loading Will's Tools..", "Loading Will's Tools..."],
+        ["Loading Will's Tools", "Loading Will's", "Loading", "Loading Will's Tools", "Loading Will's", "Loading"],
+        ["Loading Will's Tools...", "Loading Will's Tools.", "Loading Will's Tools.", "Loading Will's Tools", "Loading Will's Tools", "Loading Will's Tools...", "Loading Will's Tools.", "Loading Will's Tools.", "Loading Will's Tools", "Loading Will's Tools"],
         ["Is", "Is your", "Is your wifi", "Is your wifi down", "Is your wifi down?", "Is your wifi down?", "Is your wifi down?", "Is your wifi down??", "Is your wifi down???", "Is your wifi down????", "Is your wifi down?????"]
     ];
     const $image = document.querySelector("app a");

@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CassandrasCookbook": {
+    "WillsToolsWasm": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
