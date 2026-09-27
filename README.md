@@ -12,3 +12,7 @@ https://willherr.github.io/WillsTools/
  4. cd \docs
  5. delete folders
  6. paste clipboard
+
+## Support
+
+If this is useful, you can support it here: https://buymeacoffee.com/will.i.am.dev
